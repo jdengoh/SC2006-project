@@ -3,7 +3,8 @@
  *.pot
  *.pyc
  __pycache__
- media
+db.sqlite3 
+media
 # database not in gitignore for now
 
 # Backup files # 
