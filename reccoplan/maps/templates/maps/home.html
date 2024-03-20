@@ -1,9 +1,38 @@
- {% extends 'main.html' %}
+{% extends 'main.html' %}
 
- {% block title %} Home Page {% endblock title %}
+{% block title %} Homepage {% endblock title %}
 
- {% block content %}
-    <h1> why is the colour not changing?!</h1>
-    dsjadkajkjsfkasfl test
+
+{% block content %}
+
+
+<h1>retrieving data from database</h1>
+
+<table>
+    <thread>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Postal Code</th>
+            <th>Lat</th>
+            <th>Lon</th>    
+        </tr>
+    </thread>
+
+    {% for a in location %}
+    <tr>
+        <th>{{a.id}}</th>
+        <th>{{a.name}}</th>
+        <th>{{a.address}}</th>
+        <th>{{a.postal_code}}</th>
+    </tr>
+
+    
+    {% endfor %}
+
+
+</table>
+
 
 {% endblock content %}

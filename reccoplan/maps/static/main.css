@@ -2,8 +2,8 @@
 
 body {
     margin: 0;
-    background: #00000000;
-    color: #00000001;
+    background: white;
+    color: black;
 }
 
 /* --------- */
@@ -41,7 +41,7 @@ header {
 
 .main-header h1 {
     font-weight: bold;
-    padding: 0px 50px;
+    padding: 0px 10px;
 }
 
 .header-left{
