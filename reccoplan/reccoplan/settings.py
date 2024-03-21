@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'maps',         # maps app config
+    'maps',                         # maps app config
     'users.apps.UsersConfig',       # users app config
     'django.contrib.admin',
     'django.contrib.auth',

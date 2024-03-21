@@ -4,6 +4,7 @@ from django.views import View
 from django.views.generic import ListView
 from django.conf import settings
 from .models import *
+from members.views import *
 
 # -- test function --
 
