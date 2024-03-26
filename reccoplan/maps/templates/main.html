@@ -21,14 +21,26 @@
                     <a href="/">Explore</a>
                     <a href="#">Itinerary</a>
                     <!-- <button class="book-button">BOOK</button> -->
-                    <a href="{% url 'members:login' %}">
-                        <button class='login-button'>Login</button>
-                    </a>
+
+                    {% if user.is_authenticated %}
+                        <button class="btn btn-default navbar-btn">
+                        <a class="nav-link" href="{% url 'members:logout' %}">Logout</a>
+                        </button>
+                    {% else %}
+                        <button class="btn btn-default navbar-btn">
+                        <a class="nav-link" href="{% url 'members:register' %}">Register</a>
+                        </button>
+
+                        <button class="btn btn-default navbar-btn">
+                        <a class="nav-link" href="{% url 'members:login' %}">Login</a>
+                        </button>
+                    {% endif %}
 ''
                 </div>
 
             </div>
         </header>
+        
         <div>
             {% block content %} {% endblock %}
         </div>

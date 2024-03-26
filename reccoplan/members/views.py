@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from django.http import HttpResponse
+from .forms import RegisterUserForm
+
 
 # Create your views here.
 def loginpage(request):
@@ -17,8 +18,29 @@ def loginpage(request):
         else:
                 # Return an 'invalid login' error message.
                 messages.success(request, ("There Was An Error Logging In, Please Try Again... "))
-                return redirect('login')
+                return redirect('members:login')
 
     else:
         return render(request, 'login.html',{})
+
+def logout_user(request):
+      logout(request)
+      messages.success(request, ("You Were Logged Out!"))
+      return redirect('maps-home')        
     
+def registerpage(request):
+    if request.method == "POST":
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            messages.success(request, ("Registration Successful!"))
+            return redirect('maps-home')
+    else:
+        form = RegisterUserForm()
+
+    return render(request, 'register.html', {'form':form,})
+
