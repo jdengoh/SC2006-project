@@ -4,5 +4,5 @@ from .views import *
 
 urlpatterns = [
     path('', HomeView.as_view(), name = 'maps-home'),
-    path('location/', views.Location, name = 'maps-locations')
+    path('location/<int:pk>', LocationView.as_view(), name = 'maps-locations')
 ]

@@ -6,7 +6,7 @@
 {% block content %}
 
 
-<h1>retrieving data from database</h1>
+<h1>Geocoding</h1>
 
 <table>
     <thread>
@@ -15,8 +15,7 @@
             <th>Name</th>
             <th>Address</th>
             <th>Postal Code</th>
-            <th>Lat</th>
-            <th>Lon</th>    
+            <th>Link!</th>
         </tr>
     </thread>
 
@@ -26,6 +25,7 @@
         <th>{{a.name}}</th>
         <th>{{a.address}}</th>
         <th>{{a.postal_code}}</th>
+        <th><a href="{% url 'maps-locations' a.id %}">LINK LINK</a></th>
     </tr>
 
     
