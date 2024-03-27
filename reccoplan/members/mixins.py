@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.shortcuts import render, redirect, reverse
-from users.models import UserToken
+from members.models import UserToken
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
