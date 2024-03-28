@@ -41,6 +41,44 @@
             </div>
         </header>
         
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+<script>
+    let map
+    function initMap(){
+        map=new google.maps.Map(document.getElementById("map"), {
+            center:{lat: 23.29,lng: 113.12},
+            zoom:8, 
+        }
+        ); 
+    }
+
+    window.initMap=initMap
+
+</script>
+
+<div class="pageholder">
+    <div class="titleholder">
+
+        <div class="title"> Google Maps API Displaying markers on the Map</div>
+
+    </div>
+
+    <div class="linkholder">
+        <div class="mapholder">
+            <div id="map"> </div>
+            <script async
+                src="https://maps.googleapis.com/maps/api/js?key={{"AIzaSyBk5ooSVUwus0brlxpsPK0xC00ncs4cMI4"}}&callback=initMap">
+            </script>
+
+        </div>
+    
+    </div>
+
+
+
+</div>
+
         <div>
             {% block content %} {% endblock %}
         </div>

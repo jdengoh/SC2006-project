@@ -1,5 +1,14 @@
 /* -- BODY -- */
 
+.mapholder{
+    height: 500px; 
+    width: 100%
+}
+ #map{
+    height: 100%; 
+ }
+
+
 body {
     margin: 0;
     background: white;
@@ -85,7 +94,6 @@ header {
     font-size: 50px;
   } */
    
-
 
 
 /* ----------- */

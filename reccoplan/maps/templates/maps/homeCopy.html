@@ -1,0 +1,35 @@
+{% extends 'main.html' %}
+
+{% block title %} Homepage {% endblock title %}
+
+
+{% block content %}
+
+
+<div class="pageholder">
+    <div class="titileholder">
+
+        <div class="title"> Google Maps API Displaying markers on the Map</div>
+
+    </div>
+
+    <div class="linkholder">
+        <a href="{% url 'my_distance_view' %}"> calculate distances</a>
+        
+    </div>
+
+
+    <div class="linkholder">
+        <a href="{% url 'my_map_view' %}"> Go to the map</a>
+
+    </div>
+
+
+
+</div>
+
+
+{% endblock %}
+
+
+{% endblock content %}

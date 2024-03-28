@@ -22,14 +22,26 @@ class LocationView(View):
         return render(request, self.template_name, context)
     
 
-class HomeView(ListView):
-    template_name = "maps/home.html"
-    context_object_name = "location"
-    model = Location
-    # success_url = "/"
-    
-    # def get_data(request, pri_key):
-    #     location = Location.objects.get(pk = pri_key)
+def home(Request):
+    return HttpResponse('<h1>Maps Home</h1>')
+
+
+class HomeView(View):
+    template_name = "maps/mapview.html" #homeview is mapview for our project
+    #context_object_name = "location"
+    #model = Location
+    ## success_url = "/"
+    def get(self, request):
+        key=settings.GOOGLE_API_KEY
+        context={
+            "key": "AIzaSyBk5ooSVUwus0brlxpsPK0xC00ncs4cMI4"
+        }
+        
+        return render(request, self.template_name, context)
+
+
+def get_data(request, pri_key):
+    location = Location.objects.get(pk = pri_key)
 
     #     if location.address and location.postal_code != None:
     #         address_string = str(location.address) + str(location.postal_code)
