@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from django.conf import settings
 from .models import *
 from members.views import *
+import googlemaps
 
 # -- test function --
 
@@ -42,3 +43,18 @@ class HomeView(ListView):
     # ths doesnt work need to create seperate view to test the google api first
 
 
+class SettingView(ListView):
+    template_name = "maps/settings.html"
+    context_object_name = "settings"
+    mocel = Settings
+
+class GeocodingView(View):
+    template_name = "maps/geocoding.html"
+
+    def get(self,request,pk):
+        location = Location.objects.get(pk=pk)
+
+        context = {
+            'location':location
+        }
+        return render(request, self.template_name, context)

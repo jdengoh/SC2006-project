@@ -11,3 +11,7 @@ class Location(models.Model):
 
     def __str__(self):
         return self.name
+    
+
+class Settings(models.Model):
+    name = models.CharField(max_length = 100)

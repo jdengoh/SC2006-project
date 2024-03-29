@@ -1,12 +1,38 @@
 {% extends 'main.html' %}
+{% load static %}
 
 {% block title %} Homepage {% endblock title %}
 
 
 {% block content %}
+<title>Place Autocomplete element</title>
+
+<style>
+    #searchInput {
+        width: 300px;
+        padding: 10px;
+        font-size: 16px;
+    }
+</style>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <p style="font-family: roboto, sans-serif">Search for a place here:</p>
+    <input id="searchInput" type="text" placeholder="Enter a location">
+    <script>
+        function initAutocomplete() {
+            var input = document.getElementById('searchInput');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+        }
+        google.maps.event.addEventListener(window, 'load', initAutocomplete);
+    </script>
 
 
 <h1>retrieving data from database</h1>
+
 
 <table>
     <thread>
@@ -34,5 +60,5 @@
 
 </table>
 
-
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&libraries=places&callback=initAutocomplete&libraries=places&v=weekly"defer ></script>
 {% endblock content %}
