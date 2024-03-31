@@ -1,7 +1,7 @@
 
-$.getScript( "https://maps.googleapis.com/maps/api/js?key=" + GOOGLE_API_KEY + "&libraries=places") 
+$.getScript( "https://maps.googleapis.com/maps/api/js?key=" + AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU + "&libraries=places") 
 .done(function( script, textStatus ) {
-    google.maps.event.addDomListener(window, "load", initAutoComplete)
+    google.maps.event.addEventListener(window, "load", initAutoComplete)
 })
 
 
@@ -9,7 +9,7 @@ let autocomplete;
 
 function initAutoComplete(){
    autocomplete = new google.maps.places.Autocomplete(
-       document.getElementById('searchInput'),
+       document.getElementById('pac-input'),
        {
            types: ['address'],
            //default in this app is "UK"
@@ -25,7 +25,7 @@ function onPlaceChanged (){
     var place = autocomplete.getPlace();
 
     var geocoder = new google.maps.Geocoder()
-    var address = document.getElementById('searchInput').value
+    var address = document.getElementById('pac-input').value
 
     geocoder.geocode( { 'address': address}, function(results, status) {
 
