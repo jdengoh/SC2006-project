@@ -5,4 +5,4 @@ from django.db import models
 class UserItinerary(models.Model):
 
     name = models.CharField(max_length = 100)
-    rank = models.IntegerField() # how do we change sequence?
+    user = models.CharField(max_length = 20, null = True)    #TO-DO: change to foreign key when members model created
