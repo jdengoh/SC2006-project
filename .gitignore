@@ -152,3 +152,4 @@ env.bak/
 venv.bak/
 virtenv/
 *env/
+*virt*/
