@@ -5,6 +5,7 @@
  __pycache__
 db.sqlite3 
 media
+*migrations*
 # database not in gitignore for now
 
 .vscode
