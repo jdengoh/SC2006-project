@@ -26,7 +26,7 @@ def home(Request):
     return HttpResponse('<h1>Maps Home</h1>')
 
 
-class HomeView(View):
+class Homehtml(View):
     template_name = "maps/home.html" #homeview is mapview for our project
     #context_object_name = "location"
     #model = Location

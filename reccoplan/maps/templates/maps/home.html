@@ -26,7 +26,7 @@
             var autocomplete = new google.maps.places.Autocomplete(input);
             map = new google.maps.Map(document.getElementById('map'),
             {
-                center:{lat:41.85, lng: -87.65},
+                center:{lat:1.346, lng: 103.684},
                 zoom:15,
             });
 
@@ -52,23 +52,11 @@
                     )
                 }
             });
-
-
-        }
-        // function initAutocomplete() {
-        //     var input = document.getElementById('pac-input');
-        //     var autocomplete = new google.maps.places.Autocomplete(input);
-            
-        // }
-        function AutoComplete(map){
-            
-            autocomplete.bindTo('bounds',map);
-            const auto_marker = new google.maps.Marker({
+            autocomplete.addListener('place_changed',()=>{
+                const auto_marker = new google.maps.Marker({
                 map,
                 anchorPoint: new google.maps.Point(0,0-29),
             });
-
-            autocomplete.addListener('place_changed',()=>{
                 auto_marker.setVisible(false);
                 const place = autocomplete.getPlace();
                 const position = place.geometry.location;
@@ -84,7 +72,21 @@
                 }
                 auto_marker.setPosition(position);
                 auto_marker.setVisible(true);
-            })
+            });
+
+
+        }
+        // function initAutocomplete() {
+        //     var input = document.getElementById('pac-input');
+        //     var autocomplete = new google.maps.places.Autocomplete(input);
+            
+        // }
+        function AutoComplete(map){
+            autocomplete = new google.maps.places.Autocomplete(document.getElementById('pac-input'));
+            autocomplete.bindTo('bounds',map);
+
+
+            
             }
     </script>
     
