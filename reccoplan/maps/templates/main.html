@@ -19,7 +19,7 @@
                     <h1> EatAlready </h1>
                     <a href="{%url 'maps-home'%}">Home</a>
                     <a href="/">Explore</a>
-                    <a href="#">Itinerary</a>
+                    <a href="{%url 'itinerary:itinerary-home'%}">Itinerary</a>
                     <!-- <button class="book-button">BOOK</button> -->
 
                     {% if user.is_authenticated %}

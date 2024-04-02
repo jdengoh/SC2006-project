@@ -5,6 +5,7 @@ from django.views.generic import ListView
 from django.conf import settings
 from .models import *
 from members.views import *
+from itinerary.views import *
 
 # -- test function --
 

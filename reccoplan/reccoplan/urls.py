@@ -23,4 +23,5 @@ urlpatterns = [
     # path('maps/', include('maps.urls')),
     path('members/', include('django.contrib.auth.urls')),
     path('members/', include('members.urls', namespace='members')),
+    path('itinerary/', include('itinerary.urls', namespace='itinerary'))
 ]
