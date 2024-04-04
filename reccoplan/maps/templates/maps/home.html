@@ -29,39 +29,75 @@
                 center:{lat:23.346, lng: 113.684},
                 zoom:8,
             });*/
-            const pyrmont = { lat: 23.26, lng: 113.6 };
-            const map = new google.maps.Map(document.getElementById("map"), {
-                center: pyrmont,
-                zoom: 8,
+            var input = document.getElementById('pac-input');
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            currLoct = { lat: 23.23, lng: 113.13};
+            map = new google.maps.Map(document.getElementById("map"), {
+                center: currLoct,
+                zoom: 15,
                 mapId: "8d193001f940fde3",
             });
 
 
+            const locationButton = document.getElementById('button');
+            locationButton.textContent = 'Go to My Location';
+            locationButton.classList.add('map-button');
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+            locationButton.addEventListener('click',()=> {
+                if(navigator.geolcoation){
+                    navigator.geolocation.getCurrentPosition(
+                        (position => {
+                            const pos = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude,
+                            };
+                            map.setCenter(pos);
+                            var marker = new google.maps.Marker({
+                                positions: pos,
+                                map:map,
+                            });
+                            map.setZoom(17);
+                        })
+                    )
+                }
+            });
+            autocomplete.addListener('place_changed',()=>{
+                const auto_marker = new google.maps.Marker({
+                map,
+                anchorPoint: new google.maps.Point(0,0-29),
+            });
+
+                auto_marker.setVisible(false);
+                const place = autocomplete.getPlace();
+                const position = place.geometry.location;
+                if(!place.geometry || !place.geometry.location){
+                    window.alert("No information found for ", + place.name + "." );
+                } else {
+                if(place.geometry.viewport){
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(position);
+                    map.setZoom(17);
+                }
+                }
+                auto_marker.setPosition(position);
+                auto_marker.setVisible(true);
+            }); 
+
             const service = new google.maps.places.PlacesService(map);
             let getNextPage;
             const moreButton = document.getElementById("more");
 
             moreButton.onclick = function () {
-            moreButton.disabled = true;
-            if (getNextPage) {
-                getNextPage();
-            }
-        
-
-            const service = new google.maps.places.PlacesService(map);
-            let getNextPage;
-            const moreButton = document.getElementById("more");
-
-            moreButton.onclick = function () {
-            moreButton.disabled = true;
-            if (getNextPage) {
-                getNextPage();
-            }
-            } ;
+                moreButton.disabled = true;
+                if (getNextPage) {
+                    getNextPage();
+                }
+            };
 
             // Perform a nearby search.
             service.nearbySearch(
-                { location: pyrmont, radius: 500, type: "store" },
+                { location: currLoct, radius: 500, type: "store" },
                 (results, status, pagination) => {
                     if (status !== "OK" || !results) return;
 
@@ -75,6 +111,8 @@
                     }
                 },
             );
+
+
         }
 
         function addPlaces(places, map) {
@@ -110,86 +148,13 @@
 
         window.initMap = initMap;
 
-            /*const locationButton = document.getElementById('button');
-            locationButton.textContent = 'Go to My Location';
-            locationButton.classList.add('map-button');
-            map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-            locationButton.addEventListener('click',()=> {
-                if(navigator.geolcoation){
-                    navigator.geolocation.getCurrentPosition(
-                        (position => {
-                            const pos = {
-                                lat: position.coords.latitude,
-                                lng: position.coords.longitude,
-                            };
-                            map.setCenter(pos);
-                            var marker = new google.maps.Marker({
-                                positions: pos,
-                                map:map,
-                            });
-                            map.setZoom(17);
-                        })
-                    )
-                }
-            });
-            autocomplete.addListener('place_changed',()=>{
-                const auto_marker = new google.maps.Marker({
-                map,
-                anchorPoint: new google.maps.Point(0,0-29),
-            });
-                auto_marker.setVisible(false);
-                const place = autocomplete.getPlace();
-                const position = place.geometry.location;
-                if(!place.geometry || !place.geometry.location){
-                    window.alert("No information found for ", + place.name + "." );
-                } else {
-                if(place.geometry.viewport){
-                    map.fitBounds(place.geometry.viewport);
-                } else {
-                    map.setCenter(position);
-                    map.setZoom(17);
-                }
-                }
-                auto_marker.setPosition(position);
-                auto_marker.setVisible(true);
-            });*/
+           
 
-
-        }
         // function initAutocomplete() {
         //     var input = document.getElementById('pac-input');
         //     var autocomplete = new google.maps.places.Autocomplete(input);
             
         // }
-
-
-
-        /*map_client=googlemaps.Client('AIzaSyBk5ooSVUwus0brlxpsPK0xC00ncs4cMI4')
-        response=map_client.places_nearby(
-            Location=position, 
-            keyword='rest', 
-            name='',
-            radius=20000
-        )
-
-        for (const place in places){
-            if (place.geometry && place.geometry.location){
-                const image = {
-                    url: place.icon,
-                    size: new google.maps.Size(71, 71),
-                    origin: new google.maps.Point(0, 0),
-                    anchor: new google.maps.Point(17, 34),
-                    scaledSize: new google.maps.Size(25, 25),
-                };
-            }
-
-            new google.maps.Marker({
-                map,
-                icon: image,
-                title: place.name,
-                position: place.geometry.location,
-            });
-        }*/
 
 
         function AutoComplete(map){
@@ -209,9 +174,20 @@
         <input id='pac-input' type='text' placeholder='Enter a location'>
         <button id = 'button' type = 'button'> Search</button>
     </div>
-    <div class="mapholder">
-        <div id="map" style ="height:500px; width:100%;"></div>
-    </div>
+        <div id="container">
+            <div id="map" style ="height:500px; width:100%;"></div>
+            <div id="sidebar">
+                <h2>Results</h2>
+                <ul id="places"></ul>
+                <button id="more">Load more results</button>
+            </div>
+        </div>
+        <script 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&libraries=places&callback=initMap&libraries=places&v=weekly"
+            defer >
+        </script>
+    </body>
+
 
 
 
@@ -243,6 +219,5 @@
 
 
 </table>
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&libraries=places&callback=initMap&libraries=places&v=weekly"defer ></script>
 <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&callback=initMap"> </script> -->
 {% endblock content %}
