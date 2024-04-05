@@ -40,7 +40,7 @@
 
 
             const locationButton = document.getElementById('button');
-            locationButton.textContent = 'Go to My Location';
+            locationButton.textContent = 'Search for Nearby Activities';
             locationButton.classList.add('map-button');
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
             locationButton.addEventListener('click',()=> {
@@ -61,11 +61,12 @@
                     )
                 }
             });
+            
             autocomplete.addListener('place_changed',()=>{
                 const auto_marker = new google.maps.Marker({
                 map,
                 anchorPoint: new google.maps.Point(0,0-29),
-            });
+                });
 
                 auto_marker.setVisible(false);
                 const place = autocomplete.getPlace();
@@ -79,9 +80,27 @@
                     map.setCenter(position);
                     map.setZoom(17);
                 }
+                const image={}; //trys to reset the window that displays the nearby places. 
                 }
                 auto_marker.setPosition(position);
                 auto_marker.setVisible(true);
+                locationButton.addEventListener('click',()=> {
+                    service.nearbySearch(
+                { location: position, radius: 500, type: "store" },
+                (results, status, pagination) => {
+                    if (status !== "OK" || !results) return;
+
+                    addPlaces(results, map);
+                    moreButton.disabled = !pagination || !pagination.hasNextPage;
+                    if (pagination && pagination.hasNextPage) {
+                        getNextPage = () => {
+                        // Note: nextPage will call the same handler function as the initial call
+                        pagination.nextPage();
+                        };
+                    }
+                },
+            );
+            });
             }); 
 
             const service = new google.maps.places.PlacesService(map);
@@ -96,27 +115,12 @@
             };
 
             // Perform a nearby search.
-            service.nearbySearch(
-                { location: currLoct, radius: 500, type: "store" },
-                (results, status, pagination) => {
-                    if (status !== "OK" || !results) return;
-
-                    addPlaces(results, map);
-                    moreButton.disabled = !pagination || !pagination.hasNextPage;
-                    if (pagination && pagination.hasNextPage) {
-                        getNextPage = () => {
-                        // Note: nextPage will call the same handler function as the initial call
-                        pagination.nextPage();
-                        };
-                    }
-                },
-            );
-
-
+        
         }
 
         function addPlaces(places, map) {
             const placesList = document.getElementById("places");
+            placesList.innerHTML = '';
 
             for (const place of places) {
                 if (place.geometry && place.geometry.location) {
@@ -128,7 +132,7 @@
                         scaledSize: new google.maps.Size(25, 25),
                     };
 
-                    new google.maps.Marker({
+                    const Placelist=new google.maps.Marker({
                         map,
                         icon: image,
                         title: place.name,
