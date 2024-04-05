@@ -43,7 +43,9 @@
             locationButton.textContent = 'Search for Nearby Activities';
             locationButton.classList.add('map-button');
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
-            locationButton.addEventListener('click',()=> {
+
+            
+            /*locationButton.addEventListener('click',()=> {
                 if(navigator.geolcoation){
                     navigator.geolocation.getCurrentPosition(
                         (position => {
@@ -60,13 +62,14 @@
                         })
                     )
                 }
-            });
+            });*/
             
             autocomplete.addListener('place_changed',()=>{
+                
                 const auto_marker = new google.maps.Marker({
-                map,
-                anchorPoint: new google.maps.Point(0,0-29),
-                });
+                    map,
+                    anchorPoint: new google.maps.Point(0,0-29),
+                });  
 
                 auto_marker.setVisible(false);
                 const place = autocomplete.getPlace();
@@ -80,7 +83,7 @@
                     map.setCenter(position);
                     map.setZoom(17);
                 }
-                const image={}; //trys to reset the window that displays the nearby places. 
+               
                 }
                 auto_marker.setPosition(position);
                 auto_marker.setVisible(true);
@@ -88,8 +91,7 @@
                     service.nearbySearch(
                 { location: position, radius: 500, type: "store" },
                 (results, status, pagination) => {
-                    if (status !== "OK" || !results) return;
-
+                    //if (status !== "OK" || !results) return;
                     addPlaces(results, map);
                     moreButton.disabled = !pagination || !pagination.hasNextPage;
                     if (pagination && pagination.hasNextPage) {
@@ -118,36 +120,55 @@
         
         }
 
+        let markers = [];
+
         function addPlaces(places, map) {
+            markers.forEach(marker => {
+                marker.setMap(null);
+            });
+            markers = [];
+
             const placesList = document.getElementById("places");
             placesList.innerHTML = '';
 
-            for (const place of places) {
-                if (place.geometry && place.geometry.location) {
-                    const image = {
-                        url: place.icon,
-                        size: new google.maps.Size(71, 71),
-                        origin: new google.maps.Point(0, 0),
-                        anchor: new google.maps.Point(17, 34),
-                        scaledSize: new google.maps.Size(25, 25),
-                    };
+            if (places.length === 0) {
+                noPlacesFound(map);
+                } else {
+                    for (const place of places) {
+                        if (place.geometry && place.geometry.location) {
+                            const image = {
+                                url: place.icon,
+                                size: new google.maps.Size(71, 71),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(17, 34),
+                                scaledSize: new google.maps.Size(25, 25),
+                            };
 
-                    const Placelist=new google.maps.Marker({
-                        map,
-                        icon: image,
-                        title: place.name,
-                        position: place.geometry.location,
-                    });
+                            const marker = new google.maps.Marker({
+                                map,
+                                icon: image,
+                                title: place.name,
+                                position: place.geometry.location,
+                            });
 
-                    const li = document.createElement("li");
+                            markers.push(marker);
 
-                    li.textContent = place.name;
-                    placesList.appendChild(li);
-                    li.addEventListener("click", () => {
-                    map.setCenter(place.geometry.location);
-                    });
-                }
-            }
+                        
+                            const li = document.createElement("li");
+                            li.textContent = place.name;
+                            placesList.appendChild(li);
+                            li.addEventListener("click", () => {
+                            map.setCenter(place.geometry.location);
+                            });
+                        }
+        }
+    }
+}
+
+
+        function noPlacesFound(map){
+            const placesList = document.getElementById("places");
+            placesList.innerHTML = '';
         }
 
         window.initMap = initMap;
