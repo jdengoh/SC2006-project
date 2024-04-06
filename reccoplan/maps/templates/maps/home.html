@@ -44,31 +44,55 @@
             locationButton.classList.add('map-button');
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
+            const CL_Button = document.getElementById('CL_button');
+            CL_Button.textContent = 'Search for Current Location';
+            CL_Button.classList.add('CL_button');
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(CL_Button);
+
             
-            /*locationButton.addEventListener('click',()=> {
-                if(navigator.geolcoation){
+            CL_Button.addEventListener('click',()=> {
+
+                if(navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(
-                        (position => {
+                        (position) => {
                             const pos = {
                                 lat: position.coords.latitude,
                                 lng: position.coords.longitude,
                             };
                             map.setCenter(pos);
                             var marker = new google.maps.Marker({
-                                positions: pos,
+                                position: pos,
                                 map:map,
                             });
                             map.setZoom(17);
-                        })
-                    )
+                        },
+                        (error) => {
+                // Handle error
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        console.error("User denied the request for Geolocation.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        console.error("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        console.error("The request to get user location timed out.");
+                        break;
+                    default:
+                        console.error("An unknown error occurred.");
+                        }
+                    }
+                );
+                } else {
+                    console.error("Geolocation is not supported by this browser.");
                 }
-            });*/
+            });
             
             autocomplete.addListener('place_changed',()=>{
                 
                 const auto_marker = new google.maps.Marker({
                     map,
-                    anchorPoint: new google.maps.Point(0,0-29),
+                    center: position,
                 });  
 
                 auto_marker.setVisible(false);
@@ -198,6 +222,7 @@
     <div id = 'search-input'>
         <input id='pac-input' type='text' placeholder='Enter a location'>
         <button id = 'button' type = 'button'> Search</button>
+        <button id = 'CL_button' type = 'button'> GetCurrentPosition</button>
     </div>
         <div id="container">
             <div id="map" style ="height:500px; width:100%;"></div>
