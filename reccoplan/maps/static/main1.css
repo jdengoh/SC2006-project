@@ -86,6 +86,10 @@ header {
 
 }
 
+nav {
+  color:white;
+}
+
 .navbar-brand {
   display: flex;
   align-items: center; /* This ensures vertical center alignment */
@@ -100,6 +104,9 @@ header {
   /* Add any additional styling here */
 }
 
+.nav-link {
+  color: skyblue;
+}
 
   /* .main-header{
     max-width: 800px;
