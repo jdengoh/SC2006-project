@@ -85,6 +85,22 @@ header {
 }
 
 }
+
+.navbar-brand {
+  display: flex;
+  align-items: center; /* This ensures vertical center alignment */
+  gap: 10px; /* This adds space between the logo and text */
+}
+
+.navbar-brand h1 {
+  margin: 0; /* Removes default margin */
+  font-size: 1.25rem; /* Adjust this value as needed */
+  white-space: nowrap; /* Prevents text wrapping */
+  font-weight: normal; /* Adjust the font weight as needed */
+  /* Add any additional styling here */
+}
+
+
   /* .main-header{
     max-width: 800px;
     text-align: center;
