@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
@@ -57,17 +58,16 @@ def forgetpage(request):
         associated_users = User.objects.filter(email=email)
         if associated_users.exists():
             for user in associated_users:
-                # Generate password reset token
                 subject = "Password Reset Requested"
                 email_template_name = "password_reset_email.txt"
                 c = {
                 "email":user.email,
-                'domain':'example.com', # Update domain to your domain
-                'site_name': 'Website',
+                'domain':'EatLah.com',
+                'site_name': 'EatLah',
                 "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                 "user": user,
                 'token': default_token_generator.make_token(user),
-                'protocol': 'http', # Use 'https' in production
+                'protocol': 'http',
                 }
                 email = render_to_string(email_template_name, c)
                 try:
