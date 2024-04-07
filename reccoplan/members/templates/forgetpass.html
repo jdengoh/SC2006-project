@@ -3,10 +3,7 @@
 {% block content %}
 <br/>
 
-<div class="d-flex align-items-center">
-    <a href="{% url 'members:login' %}" class="btn btn-outline-secondary mr-3">&lt; Back</a>
-    <h2>Forgot Password</h2>
-</div>
+<h2>Forgot Password</h2>
 <p>Please enter your email address below to receive a password reset link.</p>
 
 <form action="{% url 'members:forgetpass' %}" method="POST">
@@ -18,6 +15,11 @@
     
     <button type="submit" class="btn btn-primary">Retrieve Password</button>
 </form>
+
+<div class="text-center mt-3">
+    <a href="{% url 'members:login' %}" class="btn btn-secondary">Back to Login</a>
+</div>
+
 
 <br/><br/>
 {% endblock %}
