@@ -9,43 +9,64 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href = "{% static 'main.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href = "{% static 'main1.css' %}">
+
+    <!-- Google's Roboto Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
     <title>{% block title %} {% endblock title %}</title>
   </head>
     <body>
         <header>
-            <div class="navbar bg-body-tertiary">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary">
                 <div class="container-fluid">
+<<<<<<< HEAD
                     <h1> EatAlready </h1>
                     <a href="{%url 'maps-home'%}">Home</a>
                     <a href="/">Explore</a>
                     <a href="{%url 'itinerary:itinerary-home'%}">Itinerary</a>
                     <!-- <button class="book-button">BOOK</button> -->
+=======
+                    <a class="navbar-brand">
+                        <img src="{% static 'assets/Logo.png' %}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
+                        <h1>EatAlready</h1>
+                    </a>
+>>>>>>> main
 
-                    {% if user.is_authenticated %}
-                        <button class="btn btn-default navbar-btn">
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                      <a class="nav-link active" aria-current="page" href="{%url 'maps-home'%}">Home</a>
+                      <a class="nav-link" href="/">Explore</a>
+                      <a class="nav-link" href="#">Itinerary</a>
+
+                      {% if user.is_authenticated %}
                         <a class="nav-link" href="{% url 'members:logout' %}">Logout</a>
-                        </button>
-                    {% else %}
-                        <button class="btn btn-default navbar-btn">
+                      {% else %}
+                        
                         <a class="nav-link" href="{% url 'members:register' %}">Register</a>
-                        </button>
-
-                        <button class="btn btn-default navbar-btn">
                         <a class="nav-link" href="{% url 'members:login' %}">Login</a>
-                        </button>
-                    {% endif %}
-''
+                      {% endif %}
+                    </div>
+                  </div>
                 </div>
-
-            </div>
+              </nav>
         </header>
         
 
 </div>
 
         <div>
-            {% block content %} {% endblock %}
+            {% block content %}
+            {% endblock %}
+
+            
         </div>
 
         <!-- Optional JavaScript -->
