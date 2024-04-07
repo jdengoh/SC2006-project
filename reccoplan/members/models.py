@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
 
 # Create your models here.
 class UserProfile(models.Model):
@@ -21,6 +24,7 @@ class UserProfile(models.Model):
 
 	def __str__(self):
 		return f'{self.user}'
+<<<<<<< HEAD
 
 
 
@@ -43,3 +47,5 @@ class UserToken(models.Model):
 
 	def __str__(self):
 		return f'{self.user}'
+=======
+>>>>>>> main

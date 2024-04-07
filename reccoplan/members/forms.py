@@ -10,11 +10,13 @@ class RegisterUserForm(UserCreationForm):
 	telephone = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
 	address = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
 	postal_code = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
-	
+	telephone = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
+	address = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
+	postal_code = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class':'form-control'}))
 
 	class Meta:
 		model = User
-		fields = ('username', 'first_name', 'last_name', 'email', 'telephone', 'address', 'postal_code', 'password1', 'password2')
+		fields = ('username', 'first_name', 'last_name', 'email', 'telephone', 'address', 'postal_code', 'telephone', 'address', 'postal_code', 'password1', 'password2')
 
 
 	def __init__(self, *args, **kwargs):
