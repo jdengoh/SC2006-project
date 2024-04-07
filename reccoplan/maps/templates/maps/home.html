@@ -7,13 +7,13 @@
 {% block content %}
 <title>Place Autocomplete element</title>
 
-<style>
+<!-- <style>
     #searchInput {
         width: 300px;
         padding: 10px;
         font-size: 16px;
     }
-</style>
+</style> -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
     
@@ -218,11 +218,15 @@
     
   </head>
   <body>
-    <p style="font-family: roboto, sans-serif">Search for a place here:</p>
+    <p id="search-text">Find your desired location:</p>
+
     <div id = 'search-input'>
-        <input id='pac-input' type='text' placeholder='Enter a location'>
-        <button id = 'button' type = 'button' class="btn btn-primary"> Search</button>
-        <button id = 'CL_button' type = 'button' class="btn btn-primary"> GetCurrentPosition</button>
+        <!-- <input id='pac-input' type='text' placeholder='Enter a location'>
+        <button id = 'button' type = 'button' class="btn btn-primary"> Search </button>
+        <button id = 'CL_button' type = 'button' class="btn btn-primary"> GetCurrentPosition</button> -->
+        <input id="pac-input" type="text" placeholder="Enter a location">
+        <button id="button" type="button">Search</button>
+        <button id="CL_button" type="button">Get Current Position</button>
     </div>
         <div id="container">
             <div id="map" style ="height:500px; width:100%;"></div>
