@@ -58,7 +58,7 @@ ROOT_URLCONF = 'reccoplan.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,3 +139,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'EatLahNTU@gmail.com'
 EMAIL_HOST_PASSWORD = 'twao gixr erbi dfgb'
+EMAIL_FILE_PATH = BASE_DIR / "sent_emails"
