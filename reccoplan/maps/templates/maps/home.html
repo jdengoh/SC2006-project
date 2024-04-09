@@ -263,6 +263,7 @@
     
   </head>
   <body>
+    
     <p id="search-text">Find your desired location:</p>
 
     <div id = 'search-input'>
@@ -273,12 +274,16 @@
         <button id="button" type="button">Search</button>
         <button id="CL_button" type="button">Get Current Position</button>
     </div>
+
+    <div id="map-container">
+        <div id="map" style ="height:500px; width:100%;"></div>
+    </div>
         <div id="container">
-            <div id="map" style ="height:500px; width:100%;"></div>
             <div id="sidebar">
-                <h2>Results</h2>
+                <h2 class="result-heading">Explore Nearby Activities  <button id="more" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh </button></h2>
                 <ul id="places"></ul>
-                <button id="more" class="btn btn-secondary">Load more results</button>
+                <!-- <button id="more" class="btn btn-secondary">Load more results</button> -->
+                
             </div>
         </div>
         <script 
@@ -290,9 +295,7 @@
 
 
 
-<h1>retrieving data from database</h1>
-
-
+<!-- <h1>retrieving data from database</h1>
 <table>
     <thread>
         <tr>
@@ -313,10 +316,7 @@
         <th>{{a.postal_code}}</th>
     </tr>
 
-    
     {% endfor %}
-
-
-</table>
+</table> -->
 <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&callback=initMap"> </script> -->
 {% endblock content %}
