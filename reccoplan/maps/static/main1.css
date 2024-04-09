@@ -11,9 +11,12 @@
     margin-top: 10px;
  }
 
-
+ #map-container {
+  border-radius: 20px; /* Add border-radius to create a curved rectangle */
+  overflow: hidden; /* Hide overflow to make sure map stays within container */
+}
 body {
-    margin: 0 ;
+    margin: 5px 5px ;
     line-height: 1.5;
     background: white;
     color: black;
@@ -98,6 +101,8 @@ nav {
 
 .navbar {
   margin: 0 ;
+  background-color: #f8f9fa; /* Background color */
+  padding: 10px; /* Adjust padding */
 }
 
 .navbar-brand {
@@ -106,16 +111,20 @@ nav {
   gap: 10px; /* This adds space between the logo and text */
 }
 
-.navbar-brand h1 {
-  margin: 0; /* Removes default margin */
-  font-size: 1.25rem; /* Adjust this value as needed */
+.navbar-brand h1 { 
+  margin-left: 10px; /* Removes default margin */
+  font-size: 24px; /* Adjust this value as needed 1.25rem */
   white-space: nowrap; /* Prevents text wrapping */
-  font-weight: normal; /* Adjust the font weight as needed */
+  font-weight: 1000; /* Adjust the font weight as needed */
+  color: #e63135; /* Title color */
   /* Add any additional styling here */
 }
 
 .nav-link {
-  color: skyblue;
+  /* color: white; */
+  color: #212529; /* Link color */
+  font-weight: 500; /* Font weight */
+  margin-right: 20px; /* Adjust margin between links */
 }
 
 #search-text {
@@ -141,6 +150,7 @@ nav {
 
 #button, #CL_button {
   padding: 10px 20px;
+  margin-top: 10px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
@@ -152,6 +162,12 @@ nav {
 
 #button:hover, #CL_button:hover {
   background-color: #0056b3;
+}
+
+.result-heading{
+  font-size: 24px; /* Adjust this value as needed 1.25rem */
+  white-space: nowrap; /* Prevents text wrapping */
+  font-weight: 700; /* Adjust the font weight as needed */
 }
 
   /* .main-header{

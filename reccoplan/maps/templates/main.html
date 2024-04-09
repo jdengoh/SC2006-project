@@ -21,18 +21,18 @@
   </head>
     <body>
         <header>
-            <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <nav class="navbar navbar-expand-lg bg-body-tertiary shadow-sm">
                 <div class="container-fluid">
                     <a class="navbar-brand">
-                        <img src="{% static 'assets/Logo.png' %}" alt="Logo" width="50" height="50" class="d-inline-block align-text-top">
-                        <h1>EatAlready</h1>
+                        <img src="{% static 'assets/Logo.png' %}" alt="Logo" width="50" height=auto class="d-inline-block align-text-top">
+                        <h1 class="ml-2 mb-0">EatAlready</h1>
                     </a>
 
                   <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                   </button>
 
-                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                       <a class="nav-link active" aria-current="page" href="{%url 'maps-home'%}">Home</a>
                       <a class="nav-link" href="/">Explore</a>
@@ -41,8 +41,8 @@
                       {% if user.is_authenticated %}
                         <a class="nav-link" href="{% url 'members:logout' %}">Logout</a>
                       {% else %}
-                        
-                        <a class="nav-link" href="{% url 'members:register' %}">Register</a>
+                    
+                        <!-- <a class="nav-link" href="{% url 'members:register' %}">Register</a> -->
                         <a class="nav-link" href="{% url 'members:login' %}">Login</a>
                       {% endif %}
                     </div>
@@ -57,10 +57,11 @@
         <div>
             {% block content %}
             {% endblock %}
-
-            
         </div>
 
+
+
+        
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
