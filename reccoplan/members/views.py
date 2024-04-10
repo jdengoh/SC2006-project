@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import RegisterUserForm
+from .models import UserProfile
 from .models import UserProfile 
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
@@ -37,6 +38,7 @@ def logout_user(request):
       messages.success(request, ("You Were Logged Out!"))
       return redirect('maps-home')        
     
+
 def registerpage(request):
     if request.method == "POST":
         form = RegisterUserForm(request.POST)
@@ -60,6 +62,7 @@ def registerpage(request):
             login(request, user)
             messages.success(request, ("Registration Successful!"))
             return redirect('maps-home')
+
     else:
         form = RegisterUserForm()
 

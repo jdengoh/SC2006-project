@@ -3,32 +3,33 @@
 {% block content %}
 <br/>
 
-<h1>Welcome Back</h1>
+<div class="container shadow p-3 mb-5 bg-body rounded">
+	<a href="{% url 'maps-home' %}" class="btn btn-link text-dark">
+        <i class="fas fa-arrow-left"></i> Back to Home </a>
+		<h1>Welcome Back</h1>
 
-	<form action ="" method="POST">
-		{% csrf_token %}
+		<form action ="" method="POST">
+			{% csrf_token %}
 
-		<form>
-			<div class="mb-3">
-			  <label for="username" class="form-label">Username</label>
-			  <input type="text" class="form-control" name ="username" aria-describedby="emailHelp">
-			  
-			<div class="mb-3">
-			  <label for="password" class="form-label">Password</label>
-			  <input type="password" class="form-control" name="password">
+			<form>
+				<div class="mb-3">
+				<label for="username" class="form-label">Username</label>
+				<input type="text" class="form-control" name ="username" aria-describedby="emailHelp">
+				
+				<div class="mb-3">
+				<label for="password" class="form-label">Password</label>
+				<input type="password" class="form-control" name="password">
+				</div>
+				
+				<button type="submit" class="btn btn-primary btn-block mb-4">Sign In</button>
+			</form>
+			<div class="text-center">
+				<p>Not a member? <a href="{% url 'members:register' %}">Register</a></p>
 			</div>
-			
-			<button type="submit" class="btn btn-primary btn-block mb-4">Sign In</button>
-		  </form>
-		  <div class="text-center">
-			<p>Not a member? <a href="{% url 'members:register' %}">Register</a></p>
-		  </div>
-		  <div class="text-center">
-			<p> <a href="{% url 'members:forgetpass' %}">Forgot Your Password</a></p>
-		  </div>
-		  
-		
-	</form>
-
+			<div class="text-center">
+				<p> <a href="{% url 'members:reset_password' %}">Forgot Your Password</a></p>
+			</div>
+		</form>
+	</div>
 <br/><br/>
 {% endblock %}

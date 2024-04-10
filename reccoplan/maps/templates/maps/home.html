@@ -7,17 +7,14 @@
 {% block content %}
 <title>Place Autocomplete element</title>
 
-<!-- <style>
-    #searchInput {
-        width: 300px;
-        padding: 10px;
-        font-size: 16px;
-    }
-</style> -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
 
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     
     <script>
+        var CurPosition;
+        var CurPlace;
+        var searchResultMarkers = [];
+        var nearbyPlacesMarkers = [];
 
         let map;
         let autocomplete;
@@ -51,7 +48,7 @@
 
             
             CL_Button.addEventListener('click',()=> {
-
+                clearAllMarkers();
                 if(navigator.geolocation){
                     navigator.geolocation.getCurrentPosition(
                         (CL_position) => {
@@ -60,14 +57,41 @@
                                 lng: CL_position.coords.longitude,
                             };
                             map.setCenter(CL_pos);
-                            var CL_marker = new google.maps.Marker({
-                                CL_position: CL_pos,
+                            const geocoder = new google.maps.Geocoder();
+                            geocoder.geocode({ location: CL_pos }, (results, status) =>{
+                                if (status === google.maps.GeocoderStatus.OK) {
+                                    if (results[0]) {
+                                        // Get the first result which represents the closest address
+                                        const place = results[0];
+
+                                        // Extract relevant information from the result
+                                        const formattedAddress = place.formatted_address;
+                                        CurPlace = place;
+                                        CurPosition = CL_pos;
+                                        console.log('Formatted Address:', formattedAddress);
+                                        console.log('CurPlace:', CurPlace);
+                                        console.log('CurPosition', CurPosition);
+
+                                        // Now you can use the formatted address as needed
+                                        // For example, display it to the user
+                                    } else {
+                                        console.error('No results found');
+                                    }
+                                } else {
+                                    console.error('Geocoder failed due to: ' + status);
+                                }
+                            });
+                            var marker = new google.maps.Marker({
+                                CL_position:CL_pos,
                                 map:map,
                             });
-                            CL_marker.setVisible(false);
-                            CL_marker.setPosition(CL_pos);
+                            CurPosition = CL_pos;
+                            marker.setVisible(false);
+                            marker.setPosition(CL_pos);
                             map.setZoom(17);
-                            CL_marker.setVisible(true);
+                            marker.setVisible(true);
+                            //Push the marker into the array
+                            searchResultMarkers.push(marker);
                         },
                         (error) => {
                 // Handle error
@@ -91,40 +115,41 @@
                 }
             });
             
-            autocomplete.addListener('place_changed',()=>{
-                
-                // const auto_marker = new google.maps.Marker({
-                //     map,
-                //     center: position,
-                // });
-
-                
+            autocomplete.addListener('place_changed',()=>{ 
+                clearAllMarkers();
                 const place = autocomplete.getPlace();
                 const position = place.geometry.location;
-                var auto_marker = new google.maps.Marker({
+                CurPlace= place;
+                CurPosition = position;
+                var marker = new google.maps.Marker({
                                 position: position,
                                 map:map,
                             });  
-                auto_marker.setVisible(false);
+                marker.setVisible(false);
                 if(!place.geometry || !place.geometry.location){
                     window.alert("No information found for ", + place.name + "." );
                 } else {
-                if(place.geometry.viewport){
+                if(CurPlace.geometry.viewport){
                     map.fitBounds(place.geometry.viewport);
                 } else {
-                    map.setCenter(position);
+                    map.setCenter(place);
                     map.setZoom(17);
                 }
                
                 }
-                auto_marker.setPosition(position);
-                auto_marker.setVisible(true);
-                locationButton.addEventListener('click',()=> {
-                    service.nearbySearch(
-                { location: position, radius: 500, type: "store" },
+                marker.setPosition(position);
+                marker.setVisible(true);
+                searchResultMarkers.push(marker);
+
+            }); 
+
+            locationButton.addEventListener('click',()=> {
+                console.log('position:', CurPlace);
+                service.nearbySearch(
+                {location: CurPosition, radius: 500, type: "store" },
                 (results, status, pagination) => {
                     //if (status !== "OK" || !results) return;
-                    addPlaces(results, map);
+                    addPlaces(results, map,nearbyPlacesMarkers);
                     moreButton.disabled = !pagination || !pagination.hasNextPage;
                     if (pagination && pagination.hasNextPage) {
                         getNextPage = () => {
@@ -135,8 +160,6 @@
                 },
             );
             });
-            }); 
-
             const service = new google.maps.places.PlacesService(map);
             let getNextPage;
             const moreButton = document.getElementById("more");
@@ -152,13 +175,11 @@
         
         }
 
-        let markers = [];
 
-        function addPlaces(places, map) {
-            markers.forEach(marker => {
-                marker.setMap(null);
-            });
-            markers = [];
+
+        function addPlaces(places, map, markerArray) {
+
+            clearMarkers(markerArray);
 
             const placesList = document.getElementById("places");
             placesList.innerHTML = '';
@@ -183,7 +204,7 @@
                                 position: place.geometry.location,
                             });
 
-                            markers.push(marker);
+                            markerArray.push(marker);
 
                         
                             const li = document.createElement("li");
@@ -197,6 +218,25 @@
     }
 }
 
+        // function setMapOnAll(map) {
+        //     for (let i = 0; i < markerArray.length; i++) {
+        //             markers[i].setMap(map);
+        // }
+        //     markers=[];
+        // }
+
+        function clearMarkers(markerArray) {
+        markerArray.forEach(marker => {
+            marker.setMap(null);
+        });
+        markerArray.length = 0;
+        }
+
+    // Function to clear all markers
+        function clearAllMarkers() {
+        clearMarkers(nearbyPlacesMarkers);
+        clearMarkers(searchResultMarkers);
+        }
 
         function noPlacesFound(map){
             const placesList = document.getElementById("places");
@@ -216,16 +256,14 @@
 
         function AutoComplete(map){
             autocomplete = new google.maps.places.Autocomplete(document.getElementById('pac-input'));
-            autocomplete.bindTo('bounds',map);
-
-
-            
+            autocomplete.bindTo('bounds',map);          
             }
     </script>
 
     
   </head>
   <body>
+    
     <p id="search-text">Find your desired location:</p>
 
     <div id = 'search-input'>
@@ -236,12 +274,16 @@
         <button id="button" type="button">Search</button>
         <button id="CL_button" type="button">Get Current Position</button>
     </div>
+
+    <div id="map-container">
+        <div id="map" style ="height:500px; width:100%;"></div>
+    </div>
         <div id="container">
-            <div id="map" style ="height:500px; width:100%;"></div>
             <div id="sidebar">
-                <h2>Results</h2>
+                <h2 class="result-heading">Explore Nearby Activities  <button id="more" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh </button></h2>
                 <ul id="places"></ul>
-                <button id="more" class="btn btn-secondary">Load more results</button>
+                <!-- <button id="more" class="btn btn-secondary">Load more results</button> -->
+                
             </div>
         </div>
         <script 
@@ -253,9 +295,7 @@
 
 
 
-<h1>retrieving data from database</h1>
-
-
+<!-- <h1>retrieving data from database</h1>
 <table>
     <thread>
         <tr>
@@ -276,10 +316,7 @@
         <th>{{a.postal_code}}</th>
     </tr>
 
-    
     {% endfor %}
-
-
-</table>
+</table> -->
 <!-- <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&callback=initMap"> </script> -->
 {% endblock content %}
