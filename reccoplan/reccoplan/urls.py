@@ -17,11 +17,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('maps.urls')),
+    path('', include('maps.urls', namespace='maps')),
     path('admin/', admin.site.urls),
     #path('users/', include(users.urls)),
     # path('maps/', include('maps.urls')),
     path('members/', include('django.contrib.auth.urls')),
     path('members/', include('members.urls', namespace='members')),
-    path('itinerary/', include('itinerary.urls', namespace='itinerary'))
+    path('itinerary/', include('itinerary.urls', namespace='itinerary')),
+    # path('api/', include('api.urls', namespace="api"))
 ]

@@ -4,6 +4,10 @@ from django.views import View
 from .models import *
 from maps.views import *
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ItinerarySerializer
+
 # Create your views here.
 
 class ItineraryPage(View):
@@ -15,4 +19,60 @@ class ItineraryPage(View):
         }
         return render(request, self.template_name, context)
 
-        
+
+# -- API VIEWS --
+
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        'List':'/itinerary-list/',
+        'Detailed View':'/itinerary-detail/<str:pk>/',
+        'Create':'/itinerary-create/',
+        'Update':'/itinerary-update/<str:pk>',
+        'Delete':'/itinerary-delete/<str:pk>',
+    }
+    return Response(api_urls)
+
+@api_view(['GET'])
+def ItineraryList(request):
+    itineraryList = UserItinerary.objects.all()
+    if itineraryList:
+        serializer = ItinerarySerializer(itineraryList, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({})
+    
+@api_view(['GET'])
+def ItineraryDetail(request, pk):
+    itinerary = UserItinerary.objects.get(id=pk)
+    if itinerary:
+        itineraryDetail = UserItinerary.objects.filter(id=pk)
+        serializer = ItinerarySerializer(itineraryDetail, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({})
+    
+@api_view(['POST'])
+def ItineraryCreate(request):
+    serializer = ItinerarySerializer(data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def ItineraryUpdate(request, pk):
+    itinerary = UserItinerary.objects.get(id=pk)
+    serializer = ItinerarySerializer(instance=itinerary, data=request.data)
+    
+    if serializer.is_valid():
+        serializer.save()
+
+    return Response(serializer.data)
+
+@api_view(['DELETE'])
+def ItineraryDelete(request, pk):
+    itinerary = UserItinerary.objects.get(id=pk)
+    itinerary.delete()
+    # return Response(serializer.data) 
