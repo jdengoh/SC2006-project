@@ -1,5 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import UserProfile
 from django import forms
 
 
@@ -17,17 +18,21 @@ class RegisterUserForm(UserCreationForm):
 
 	def clean_email(self):
 		email = self.cleaned_data.get('email')
-		if email and User.objects.filter(email=email).exists():
+		if email and UserProfile.objects.filter(email=email).exists():
 			error_message = "The given email is already registered."
 			self.add_error(None, error_message)  # Adding form-level error
 		return email
 	
-	# def clean_telephone(self):
-	# 	telephone = self.cleaned_data.get('telephone')
-	# 	if telephone and User.objects.filter(telephone=telephone).exists():
-	# 		error_message = "The given phone number is already registered."
-	# 		self.add_error(None, error_message)  # Adding form-level error
-	# 	return telephone
+	def clean_telephone(self):
+		telephone = self.cleaned_data.get('telephone')
+		if telephone and UserProfile.objects.filter(telephone=telephone).exists():
+			error_message = "The given phone number is already registered."
+			self.add_error(None, error_message)  # Adding form-level error
+
+		return telephone
+    
+
+
 
 	class Meta:
 		model = User
