@@ -24,7 +24,7 @@ def loginpage(request):
         if user is not None:
                 login(request, user)
                 # Redirect to a success page.
-                return redirect('maps:maps-home')
+                return redirect('maps-home')
         else:
                 # Return an 'invalid login' error message.
                 messages.success(request, ("There Was An Error Logging In, Please Try Again... "))
@@ -36,7 +36,7 @@ def loginpage(request):
 def logout_user(request):
       logout(request)
       messages.success(request, ("You Were Logged Out!"))
-      return redirect('maps:maps-home')        
+      return redirect('maps-home')        
     
 
 def registerpage(request):
@@ -61,7 +61,7 @@ def registerpage(request):
             user = authenticate(username=username, password=password)
             login(request, user)
             messages.success(request, ("Registration Successful!"))
-            return redirect('maps:maps-home')
+            return redirect('maps-home')
 
     else:
         form = RegisterUserForm()

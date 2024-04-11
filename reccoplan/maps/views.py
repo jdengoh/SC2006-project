@@ -6,10 +6,6 @@ from django.conf import settings
 from .models import *
 from members.views import *
 
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-from .serializers import LocationSerializer
-
 # -- test function --
 
 
@@ -58,59 +54,3 @@ def get_data(request, pri_key):
     # ths doesnt work need to create seperate view to test the google api first
 
 
-# -- API VIEWS --
-
-@api_view(['GET'])
-def apiOverview(request):
-    api_urls = {
-        'List':'/location-list/',
-        'Detailed View':'/location-detail/<str:pk>/',
-        'Create':'/location-create/',
-        'Update':'/location-update/<str:pk>',
-        'Delete':'/location-delete/<str:pk>',
-    }
-    return Response(api_urls)
-
-@api_view(['GET'])
-def LocationList(request):
-    locationList = Location.objects.all()
-    if locationList:
-        serializer = LocationSerializer(locationList, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({})
-    
-@api_view(['GET'])
-def LocationDetail(request, pk):
-    location = Location.objects.get(id=pk)
-    if location:
-        locationDetail = Location.objects.filter(id=pk)
-        serializer = LocationSerializer(locationDetail, many=True)
-        return Response(serializer.data)
-    else:
-        return Response({})
-    
-@api_view(['POST'])
-def LocationCreate(request):
-    serializer = LocationSerializer(data=request.data)
-    
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['POST'])
-def LocationUpdate(request, pk):
-    location = Location.objects.get(id=pk)
-    serializer = LocationSerializer(instance=location, data=request.data)
-    
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
-
-@api_view(['DELETE'])
-def LocationDelete(request, pk):
-    location = Location.objects.get(id=pk)
-    location.delete()
-    # return Response(serializer.data) 

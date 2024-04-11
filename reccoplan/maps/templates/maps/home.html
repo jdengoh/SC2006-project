@@ -18,37 +18,6 @@
 
         let map;
         let autocomplete;
-        function getCookie(name) {
-            let cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                const cookies = document.cookie.split(';');
-                for (let i = 0; i < cookies.length; i++) {
-                    const cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
-        const csrftoken = getCookie('csrftoken');
-
-        async function getItineraryID() {
-            var url = "http://127.0.0.1:8000/itinerary/api/itinerary-list/";
-        
-            try {
-                const resp = await fetch(url);
-                const data = await resp.json();
-                const itineraryID = data[0].id; // Assuming the ID is the first item in the response array
-                return itineraryID;
-            } catch (error) {
-                console.error("Error:", error);
-                throw error; // Rethrow the error to propagate it
-            }
-        }
-
         function initMap(){
            /*var input = document.getElementById('pac-input');
             var autocomplete = new google.maps.places.Autocomplete(input);
@@ -177,7 +146,7 @@
             locationButton.addEventListener('click',()=> {
                 console.log('position:', CurPlace);
                 service.nearbySearch(
-                {location: CurPosition, radius: 500, type: ["store"] },
+                {location: CurPosition, radius: 500, type: "store" },
                 (results, status, pagination) => {
                     //if (status !== "OK" || !results) return;
                     addPlaces(results, map,nearbyPlacesMarkers);
@@ -218,23 +187,7 @@
             if (places.length === 0) {
                 noPlacesFound(map);
                 } else {
-                    placesList.innerHTML = ''
-                    placesList.innerHTML +=
-                    `<thead>
-                        <tr>
-                            <th>Activity</th>
-                            <th>Link</th>
-                            <th>Add?</th>
-
-                        </tr>
-                    </thead>
-
-                    <tbody>`
-                    var i=0;
                     for (const place of places) {
-                        //console.log("PLACES BELOW")
-                        //console.log(place)
-
                         if (place.geometry && place.geometry.location) {
                             const image = {
                                 url: place.icon,
@@ -252,70 +205,18 @@
                             });
 
                             markerArray.push(marker);
-                            var item = 
-                            `<tr>
-                                <td>${place.name}</td>
-                                <td></td>
-                                <td>
-                                    <button id="add_activity_${i}" class="btn btn-secondary"> Add </button>
-                                </td>
-                            </tr>
-                            `
-                            placesList.innerHTML += item
-                            i++;
-                            //console.log(i)
-                            //const li = document.createElement("li");
-                            //li.textContent = place.name;
-                            //placesList.appendChild(li);
-                            //li.addEventListener("click", () => {
-                            //map.setCenter(place.geometry.location);
-                            //});                        }
+
+                        
+                            const li = document.createElement("li");
+                            li.textContent = place.name;
+                            placesList.appendChild(li);
+                            li.addEventListener("click", () => {
+                            map.setCenter(place.geometry.location);
+                            });
                         }
-                    
-                placesList.innerHTML += `</tbody>`
-                }
-            }
-
-                j=0;
-                for (const place of places) {
-                    let add_act = "add_activity_"
-                    let id = add_act.concat(j.toString())
-                    console.log(id)
-                    var createbtn = document.getElementById(id)
-                    if (createbtn) {
-                        createbtn.addEventListener('click', (function(){
-                        //returZZZZZZn function(){
-                        createItem(place)
-                        })
-                // }(places[i]))
-                    )
-                    }
-                    j++;
-                }
-        
         }
-        function createItem(place){
-            (async () => {
-                const i_id = await getItineraryID();
-                var url = "http://127.0.0.1:8000/api/location-create/"
-
-                fetch(url, {
-                    method:'POST',
-                    headers:{
-                        'Content-type':'application/json',
-                        'X-CSRFtoken': csrftoken
-                    },
-                    body:JSON.stringify({
-                        'name': place.name,
-                        "postal_code" : 12345,
-                        'address': place.reference,
-                        'itineraryID': parseInt(i_id),
-                    })
-                })
-
-                })();
-            
-        }
+    }
+}
 
         // function setMapOnAll(map) {
         //     for (let i = 0; i < markerArray.length; i++) {
@@ -357,8 +258,6 @@
             autocomplete = new google.maps.places.Autocomplete(document.getElementById('pac-input'));
             autocomplete.bindTo('bounds',map);          
             }
-
-        
     </script>
 
     
@@ -382,7 +281,7 @@
         <div id="container">
             <div id="sidebar">
                 <h2 class="result-heading">Explore Nearby Activities  <button id="more" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh </button></h2>
-                <table id="places", class="table-style"></table>
+                <ul id="places"></ul>
                 <!-- <button id="more" class="btn btn-secondary">Load more results</button> -->
                 
             </div>
