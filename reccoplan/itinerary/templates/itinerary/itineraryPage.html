@@ -45,7 +45,7 @@
                     console.log(i)
                     var item = `
                         <tr>
-                            <td>${itinerary[0].activities[0].name}</td>
+                            <td>${itinerary[0].activities[i].name}</td>
                             <td>
                                 <button id="delete_activity" class="btn btn-secondary delete"> Delete </button>
                             </td>
@@ -72,7 +72,7 @@
 
 </script>
 
-
+{% comment %} 
 <table>
     <thread>
         <tr>
@@ -97,5 +97,5 @@
     {% endfor %}
 
 
-</table>
+</table> {% endcomment %}
 {% endblock content %}
