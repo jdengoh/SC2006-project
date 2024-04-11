@@ -1,0 +1,138 @@
+/* -- BODY -- */
+
+.mapholder{
+    height: 500px; 
+    width: 100%
+}
+ #map{
+    height: 100%; 
+ }
+
+
+body {
+    margin: 0;
+    background: white;
+    color: black;
+}
+
+/* --------- */
+
+/* -- HEADER -- */
+ 
+header {
+    margin: 3;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #123;
+    color: 123;
+    min-height:0px;
+    padding: 0px;
+    position:static;
+  }
+
+.main-header {
+    overflow: hidden;
+    background-color:#123;
+    padding: 10px 40px;
+
+}
+
+.main-header a {
+    float: left;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 0px;
+    border-radius: 0px;
+
+}
+
+.main-header h1 {
+    font-weight: bold;
+    padding: 0px 10px;
+}
+
+.header-left{
+    float: left;
+    display: flex;
+    align-items: center;
+}
+
+.header-right{
+    float: right;
+    display: flex;
+    align-items: center;
+}
+
+.login-button{
+    padding: 10px 30px;
+    border-radius: 50px;
+}
+
+@media screen and (max-width: 500px) {
+.header a {
+    float: none;
+    display: block;
+    text-align: left;
+}
+
+.header-right {
+    float: none;
+}
+}
+
+.table-style {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.table-style thead tr {
+    background-color: #4C9085;
+    color: #ffffff;
+    text-align: left;
+}
+
+.table-style th,
+.table-style td {
+    padding: 12px 15px;
+}
+
+.table-style tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.table-style tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+    /* font-weight: bold; */
+    /* color: #009879; */
+}
+
+.table-style tbody tr:last-of-type {
+    border-bottom: 2px solid #4C9085;
+}
+
+/* .table-style tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+} */
+
+
+  /* .main-header{
+    max-width: 800px;
+    text-align: center;
+    margin: auto;
+  }
+  
+  
+  .main-header h1{
+    font-size: 50px;
+  } */
+   
+
+
+/* ----------- */
