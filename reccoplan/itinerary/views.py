@@ -4,6 +4,7 @@ from django.views import View
 from .models import *
 from maps.views import *
 
+# from rest_framework import generics
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import ItinerarySerializer
@@ -33,9 +34,23 @@ def apiOverview(request):
     }
     return Response(api_urls)
 
+# class YourItineraryList(generics.ListAPIView):
+#     serializer_class = ItinerarySerializer
+#     def get_queryset(self):
+#         # Get the currently authenticated user
+#         user = self.request.user
+
+#         # Filter data based on user
+#         queryset = UserItinerary.objects.filter(user=user)
+#         return queryset
+
+
 @api_view(['GET'])
 def ItineraryList(request):
-    itineraryList = UserItinerary.objects.all()
+
+    user = request.user
+
+    itineraryList = UserItinerary.objects.filter(user=user)
     if itineraryList:
         serializer = ItinerarySerializer(itineraryList, many=True)
         return Response(serializer.data)
@@ -44,6 +59,7 @@ def ItineraryList(request):
     
 @api_view(['GET'])
 def ItineraryDetail(request, pk):
+    
     itinerary = UserItinerary.objects.get(id=pk)
     if itinerary:
         itineraryDetail = UserItinerary.objects.filter(id=pk)

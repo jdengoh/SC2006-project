@@ -1,5 +1,5 @@
 from django.db import models
-from members.models import UserProfile
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -10,4 +10,4 @@ class UserItinerary(models.Model):
     updated_at = models.DateField(auto_now=True, null=True)
     
     # foreign key
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)

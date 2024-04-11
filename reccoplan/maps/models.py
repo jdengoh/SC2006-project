@@ -9,7 +9,7 @@ class Location(models.Model):
     address = models.CharField(max_length = 200, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     edited_at = models.DateTimeField(auto_now=True)
-    itineraryID = models.ForeignKey(UserItinerary, on_delete=models.CASCADE, null=True) # to change to non-nullable since location added to itinerary?
+    itineraryID = models.ForeignKey(UserItinerary, related_name="activities", on_delete=models.CASCADE) # to change to non-nullable since location added to itinerary?
 
     def __str__(self):
         return self.name
