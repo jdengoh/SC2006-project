@@ -15,4 +15,7 @@ urlpatterns = [
     path('api/location-create/', views.LocationCreate),
     path('api/location-update/<str:pk>/', views.LocationUpdate),
     path('api/location-delete/<str:pk>/', views.LocationDelete),
+
+    path('api/get-current-user-id/', views.get_current_user_id, name='get_current_user_id'),
+
 ]

@@ -7,6 +7,64 @@ var nearbyPlacesMarkers = [];
 let map;
 let autocomplete;
 
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+
+
+async function getItineraryID() {
+    var url = "http://127.0.0.1:8000/itinerary/api/itinerary-list/";
+
+    try {
+        // console.log("try")
+        const resp = await fetch(url);
+        const data = await resp.json();
+        if (data[0] == null) {
+            throw "No itineraries found"
+        }
+        const itineraryID = data[0].id; // Assuming the ID is the first item in the response array
+        return itineraryID;
+    } catch (error) {
+        console.error("Error:", error);
+        // console.log('cannot bro')
+
+        // missing itinerary, lets create it
+        var createUrl = "http://127.0.0.1:8000/itinerary/api/itinerary-create/";
+        console.log( await getUserID())
+        try {
+            const resp = await fetch(createUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken
+                },
+                
+                body: JSON.stringify({
+                    "name": "Itinerary",
+                    "user": await getUserID(),
+                })
+            });
+            const newData = await resp.json();
+            return newData.id; // Return the ID of the newly created itinerary
+        } catch (error) {
+            console.error("Error creating itinerary:", error);
+            throw error; // Rethrow the error to propagate it
+        }
+    }
+}
 
 function initMap(){
    /*var input = document.getElementById('pac-input');
@@ -192,7 +250,7 @@ function addPlaces(places, map, markerArray) {
             var i=0;
             for (const place of places) {
                 //console.log("PLACES BELOW")
-                //console.log(place)
+                console.log(place)
 
                 if (place.geometry && place.geometry.location) {
                     const image = {
@@ -253,27 +311,50 @@ function addPlaces(places, map, markerArray) {
         }
 
 }
-function createItem(place){
-    (async () => {
-        const i_id = await getItineraryID();
-        var url = "http://127.0.0.1:8000/api/location-create/"
+// function createItem(place){
+//     (async () => {
+//         const i_id = await getItineraryID();
+//         var url = "http://127.0.0.1:8000/api/location-create/"
 
-        fetch(url, {
-            method:'POST',
-            headers:{
-                'Content-type':'application/json',
+//         fetch(url, {
+//             method:'POST',
+//             headers:{
+//                 'Content-type':'application/json',
+//                 'X-CSRFtoken': csrftoken
+//             },
+//             body:JSON.stringify({
+//                 'name': place.name,
+//                 "postal_code" : 12345,
+//                 'address': place.reference,
+//                 'itineraryID': parseInt(i_id),
+//             })
+//         })
+
+//         })();
+    
+// }
+async function createItem(place) {
+    try {
+        const i_id = await getItineraryID();
+        var url = "http://127.0.0.1:8000/api/location-create/";
+
+        const resp = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
                 'X-CSRFtoken': csrftoken
             },
-            body:JSON.stringify({
+            body: JSON.stringify({
                 'name': place.name,
-                "postal_code" : 12345,
+                "postal_code": 12345,
                 'address': place.reference,
                 'itineraryID': parseInt(i_id),
             })
-        })
-
-        })();
-    
+        });
+    } catch (error) {
+        console.error("Error creating location:", error);
+        throw error;
+    }
 }
 
 // function setMapOnAll(map) {
@@ -318,3 +399,5 @@ function AutoComplete(map){
     }
 
 
+
+    

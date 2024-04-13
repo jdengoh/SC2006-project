@@ -92,3 +92,9 @@ def ItineraryDelete(request, pk):
     itinerary = UserItinerary.objects.get(id=pk)
     itinerary.delete()
     # return Response(serializer.data) 
+
+def get_current_user_id(request):
+    if request.user.is_authenticated:
+        return JsonResponse({'user_id': request.user.id})
+    else:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)

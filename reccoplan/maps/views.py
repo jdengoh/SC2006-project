@@ -6,6 +6,7 @@ from django.conf import settings
 from .models import *
 from members.views import *
 
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .serializers import LocationSerializer
@@ -114,3 +115,10 @@ def LocationDelete(request, pk):
     location = Location.objects.get(id=pk)
     location.delete()
     # return Response(serializer.data) 
+
+
+def get_current_user_id(request):
+    if request.user:
+        return JsonResponse({'user_id': request.user.id})
+    else:
+        return JsonResponse({'error': 'User not authenticated'}, status=401)
