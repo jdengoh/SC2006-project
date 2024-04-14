@@ -7,6 +7,18 @@ var nearbyPlacesMarkers = [];
 let map;
 let autocomplete;
 
+let restaurantData = [];
+
+
+async function fetchRestaurantData() {
+    // Replace with your API endpoint or data source
+    const response = await fetch('http://127.0.0.1:8000/itinerary/api/restaurants-list/');
+    restaurantData = await response.json();
+}
+
+// Call the function to fetch restaurant data
+fetchRestaurantData();
+
 function getCookie(name) {
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -194,7 +206,7 @@ function initMap(){
     locationButton.addEventListener('click',()=> {
         console.log('position:', CurPlace);
         service.nearbySearch(
-        {location: CurPosition, radius: 500, type: ["store"] },
+        {location: { 'lat': parseFloat(restaurantData[0].lat), lng: parseFloat(restaurantData[0].lon)}, radius: 500, type: ["store"] },
         (results, status, pagination) => {
             //if (status !== "OK" || !results) return;
             addPlaces(results, map,nearbyPlacesMarkers);
