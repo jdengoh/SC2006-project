@@ -10,7 +10,8 @@ class Location(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
     edited_at = models.DateTimeField(auto_now=True)
     itineraryID = models.ForeignKey(UserItinerary, related_name="activities", on_delete=models.CASCADE) # to change to non-nullable since location added to itinerary?
-
+    is_Restaurant = models.BooleanField(default=False)
+    
     def __str__(self):
         return self.name
     

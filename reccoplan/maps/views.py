@@ -73,6 +73,16 @@ def apiOverview(request):
     return Response(api_urls)
 
 @api_view(['GET'])
+def RestaurantList(request):
+    restaurantList = Location.objects.filter(is_Restaurant=True)
+    if restaurantList:
+        serializer = LocationSerializer(restaurantList, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({})
+
+
+@api_view(['GET'])
 def LocationList(request):
     locationList = Location.objects.all()
     if locationList:

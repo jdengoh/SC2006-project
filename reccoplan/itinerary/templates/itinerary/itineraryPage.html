@@ -8,6 +8,13 @@
 <div class="row">
     <div class="col-md-6">
         <h1>Itinerary for {{user}}</h1>
+        <table id="restaurant-table", class="table-style">
+            
+        </table>
+        
+
+        </table>
+
         <table id="itinerary-table", class="table-style">
 
         </table>
@@ -61,59 +68,59 @@
         fetch(url)
         .then((resp) => resp.json())
         .then(function(data){
-            // console.log('Data:', data)
             var itinerary = data
 
-            if (itinerary[0].activities){
-                for (var i in itinerary[0].activities) {
-                    console.log(i)
-                    var item = `
-                        <tr>
-                            <td>${itinerary[0].activities[i].name}</td>
-                            <td>
-                                <button id="delete_activity_${i}" class="btn btn-secondary"> Delete </button>
-                            </td>
-                        </tr>
-                        `
-                wrapper.innerHTML += item
-                }
-
-                // not wokring
-                for (var j in itinerary[0].activities) {
-                    console.log('findelete?"')
-                    let del_act = "delete_activity_"
-                    let id = del_act.concat(j.toString())
-                    var deletebtn = document.getElementById(id)
-                    var item = itinerary[0].activities[j]
-                    if (deletebtn) {
-                        deletebtn.addEventListener('click', (function(item){
-                            return function() {
-                                console.log("clicked")
-                                deleteItem(item.id)
-                            }
-                            
-                        }))
+                if (itinerary[0].activities){
+                    for (var i in itinerary[0].activities) {
+                        console.log(i)
+                        var item = `
+                            <tr>
+                                <td>${itinerary[0].activities[i].name}</td>
+                                <td>
+                                    <button id="delete_activity_${i}" class="btn btn-secondary"> Delete </button>
+                                </td>
+                            </tr>
+                            `
+                    wrapper.innerHTML += item
                     }
+
+                    setTimeout(function() {
+                        for (var j in itinerary[0].activities) {
+                            console.log('findelete?"')
+                            let del_act = "delete_activity_"
+                            let id = del_act.concat(j.toString())
+                            var deletebtn = document.getElementById(id)
+                            var item = itinerary[0].activities[j]
+                            if (deletebtn) {
+                                deletebtn.addEventListener('click', (function(item){
+                                    return function() {
+                                        console.log("clicked")
+                                        deleteItem(item.id)
+                                    }
+                                    
+                                })(item)) // Immediately invoke function to preserve current item
+                            }
+                        }
+                    }, 0);
                 }
+                wrapper.innerHTML += `</tbody>`
+            })
+        }
+
+            function deleteItem(id) {
+                console.log("clicked")
+                var url = `http://127.0.0.1:8000/api/location-delete/${id}`
+                fetch(url,{
+                    method:'DELETE',
+                    headers:{
+                        'Content-type':'application/json',
+                        'X-CSRFtoken': csrftoken
+                    },
+                }).then((respone) => {
+                    buildList()
+                })
+
             }
-            wrapper.innerHTML += `</tbody>`
-        })
-    }
-
-    function deleteItem(id) {
-        console.log("clicked")
-        var url = `http://127.0.0.1:8000/api/location-delete/${id}`
-        fetch(url,{
-            method:'DELETE',
-            headers:{
-                'Content-type':'application/json',
-                'X-CSRFtoken': csrftoken
-            },
-        }).then((respone) => {
-            buildList()
-        })
-
-    }
     //var add = document.getElementById("delete_activity")
     //add.addEventListener('Add', function(e){
     //    e.preventDefault()
@@ -132,26 +139,4 @@ defer >
 </script>   
 
 
-{% comment %} <div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h4>Itinerary</h4>
-                </div>
-                <div class="card-body">
-                    <form id="itinerary-form">
-                        <div class="form-group  mb-3">
-                            <label for="activity">Activity</label>
-                            <input type="text" id="activity" class="form-control">
-                        </div>
-                        <button type="submit" class="btn btn-secondary">Add</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> {% endcomment %}
-
-    
 {% endblock content %}
