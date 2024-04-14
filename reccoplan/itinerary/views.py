@@ -44,6 +44,20 @@ def apiOverview(request):
 #         queryset = UserItinerary.objects.filter(user=user)
 #         return queryset
 
+@api_view(['GET'])
+def RestaurantList(request):
+    
+    user = request.user
+
+    itineraryList = UserItinerary.objects.filter(user=user)
+    itinerary_ids = [itinerary.id for itinerary in itineraryList]
+    LocationList = Location.objects.filter(is_Restaurant=True, itineraryID__in=itinerary_ids)
+
+    if LocationList:
+        serializer = LocationSerializer(LocationList, many=True)
+        return Response(serializer.data)
+    else:
+        return Response({})
 
 @api_view(['GET'])
 def ItineraryList(request):

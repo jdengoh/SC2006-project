@@ -16,4 +16,7 @@ urlpatterns = [
     path('api/itinerary-update/<str:pk>/', views.ItineraryUpdate),
     path('api/itinerary-delete/<str:pk>/', views.ItineraryDelete),
 
+    path('api/restaurants-list/', views.RestaurantList),
+
+
 ]

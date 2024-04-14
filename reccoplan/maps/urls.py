@@ -10,6 +10,8 @@ urlpatterns = [
 
     # API URLS
     path('api/', views.apiOverview, name="maps-api"),
+
+    # path('api/restaurants-list/', views.RestaurantList),
     path('api/location-list/', views.LocationList),
     path('api/location-detail/<str:pk>/', views.LocationDetail),
     path('api/location-create/', views.LocationCreate),
@@ -17,5 +19,6 @@ urlpatterns = [
     path('api/location-delete/<str:pk>/', views.LocationDelete),
 
     path('api/get-current-user-id/', views.get_current_user_id, name='get_current_user_id'),
+
 
 ]
