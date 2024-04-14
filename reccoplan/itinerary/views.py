@@ -64,7 +64,7 @@ def ItineraryList(request):
 
     user = request.user
 
-    itineraryList = UserItinerary.objects.filter(user=user, is_Restaurant = False)
+    itineraryList = UserItinerary.objects.filter(user=user)
     if itineraryList:
         serializer = ItinerarySerializer(itineraryList, many=True)
         return Response(serializer.data)
