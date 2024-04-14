@@ -101,107 +101,107 @@ function initMap(){
     locationButton.classList.add('map-button');
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
-    const CL_Button = document.getElementById('CL_button');
-    CL_Button.textContent = 'Search for Current Location';
-    CL_Button.classList.add('CL_button');
-    map.controls[google.maps.ControlPosition.TOP_CENTER].push(CL_Button);
+    // const CL_Button = document.getElementById('CL_button');
+    // CL_Button.textContent = 'Search for Current Location';
+    // CL_Button.classList.add('CL_button');
+    // map.controls[google.maps.ControlPosition.TOP_CENTER].push(CL_Button);
 
     
-    CL_Button.addEventListener('click',()=> {
-        clearAllMarkers();
-        if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition(
-                (CL_position) => {
-                    const CL_pos = {
-                        lat: CL_position.coords.latitude,
-                        lng: CL_position.coords.longitude,
-                    };
-                    map.setCenter(CL_pos);
-                    const geocoder = new google.maps.Geocoder();
-                    geocoder.geocode({ location: CL_pos }, (results, status) =>{
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            if (results[0]) {
-                                // Get the first result which represents the closest address
-                                const place = results[0];
+    // CL_Button.addEventListener('click',()=> {
+    //     clearAllMarkers();
+    //     if(navigator.geolocation){
+    //         navigator.geolocation.getCurrentPosition(
+    //             (CL_position) => {
+    //                 const CL_pos = {
+    //                     lat: CL_position.coords.latitude,
+    //                     lng: CL_position.coords.longitude,
+    //                 };
+    //                 map.setCenter(CL_pos);
+    //                 const geocoder = new google.maps.Geocoder();
+    //                 geocoder.geocode({ location: CL_pos }, (results, status) =>{
+    //                     if (status === google.maps.GeocoderStatus.OK) {
+    //                         if (results[0]) {
+    //                             // Get the first result which represents the closest address
+    //                             const place = results[0];
 
-                                // Extract relevant information from the result
-                                const formattedAddress = place.formatted_address;
-                                CurPlace = place;
-                                CurPosition = CL_pos;
-                                console.log('Formatted Address:', formattedAddress);
-                                console.log('CurPlace:', CurPlace);
-                                console.log('CurPosition', CurPosition);
+    //                             // Extract relevant information from the result
+    //                             const formattedAddress = place.formatted_address;
+    //                             CurPlace = place;
+    //                             CurPosition = CL_pos;
+    //                             console.log('Formatted Address:', formattedAddress);
+    //                             console.log('CurPlace:', CurPlace);
+    //                             console.log('CurPosition', CurPosition);
 
-                                // Now you can use the formatted address as needed
-                                // For example, display it to the user
-                            } else {
-                                console.error('No results found');
-                            }
-                        } else {
-                            console.error('Geocoder failed due to: ' + status);
-                        }
-                    });
-                    var marker = new google.maps.Marker({
-                        CL_position:CL_pos,
-                        map:map,
-                    });
-                    CurPosition = CL_pos;
-                    marker.setVisible(false);
-                    marker.setPosition(CL_pos);
-                    map.setZoom(17);
-                    marker.setVisible(true);
-                    //Push the marker into the array
-                    searchResultMarkers.push(marker);
-                },
-                (error) => {
-        // Handle error
-        switch(error.code) {
-            case error.PERMISSION_DENIED:
-                console.error("User denied the request for Geolocation.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                console.error("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                console.error("The request to get user location timed out.");
-                break;
-            default:
-                console.error("An unknown error occurred.");
-                }
-            }
-        );
-        } else {
-            console.error("Geolocation is not supported by this browser.");
-        }
-    })
+    //                             // Now you can use the formatted address as needed
+    //                             // For example, display it to the user
+    //                         } else {
+    //                             console.error('No results found');
+    //                         }
+    //                     } else {
+    //                         console.error('Geocoder failed due to: ' + status);
+    //                     }
+    //                 });
+    //                 var marker = new google.maps.Marker({
+    //                     CL_position:CL_pos,
+    //                     map:map,
+    //                 });
+    //                 CurPosition = CL_pos;
+    //                 marker.setVisible(false);
+    //                 marker.setPosition(CL_pos);
+    //                 map.setZoom(17);
+    //                 marker.setVisible(true);
+    //                 //Push the marker into the array
+    //                 searchResultMarkers.push(marker);
+    //             },
+    //             (error) => {
+    //     // Handle error
+    //     switch(error.code) {
+    //         case error.PERMISSION_DENIED:
+    //             console.error("User denied the request for Geolocation.");
+    //             break;
+    //         case error.POSITION_UNAVAILABLE:
+    //             console.error("Location information is unavailable.");
+    //             break;
+    //         case error.TIMEOUT:
+    //             console.error("The request to get user location timed out.");
+    //             break;
+    //         default:
+    //             console.error("An unknown error occurred.");
+    //             }
+    //         }
+    //     );
+    //     } else {
+    //         console.error("Geolocation is not supported by this browser.");
+    //     }
+    // })
     
-    autocomplete.addListener('place_changed',()=>{ 
-        clearAllMarkers();
-        const place = autocomplete.getPlace();
-        const position = place.geometry.location;
-        CurPlace= place;
-        CurPosition = position;
-        var marker = new google.maps.Marker({
-                        position: position,
-                        map:map,
-                    });  
-        marker.setVisible(false);
-        if(!place.geometry || !place.geometry.location){
-            window.alert("No information found for ", + place.name + "." );
-        } else {
-        if(CurPlace.geometry.viewport){
-            map.fitBounds(place.geometry.viewport);
-        } else {
-            map.setCenter(place);
-            map.setZoom(17);
-        }
+    // autocomplete.addListener('place_changed',()=>{ 
+    //     clearAllMarkers();
+    //     const place = autocomplete.getPlace();
+    //     const position = place.geometry.location;
+    //     CurPlace= place;
+    //     CurPosition = position;
+    //     var marker = new google.maps.Marker({
+    //                     position: position,
+    //                     map:map,
+    //                 });  
+    //     marker.setVisible(false);
+    //     if(!place.geometry || !place.geometry.location){
+    //         window.alert("No information found for ", + place.name + "." );
+    //     } else {
+    //     if(CurPlace.geometry.viewport){
+    //         map.fitBounds(place.geometry.viewport);
+    //     } else {
+    //         map.setCenter(place);
+    //         map.setZoom(17);
+    //     }
        
-        }
-        marker.setPosition(position);
-        marker.setVisible(true);
-        searchResultMarkers.push(marker);
+    //     }
+    //     marker.setPosition(position);
+    //     marker.setVisible(true);
+    //     searchResultMarkers.push(marker);
 
-    }); 
+    // }); 
     
     locationButton.addEventListener('click',()=> {
         
