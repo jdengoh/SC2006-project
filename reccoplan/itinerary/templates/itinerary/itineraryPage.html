@@ -21,9 +21,31 @@
 
     </div>
     <div class="col-md-6">
+        <p id="search-text">Find your desired location:</p>
+
+    <div id = 'search-input'>
+        <!-- <input id='pac-input' type='text' placeholder='Enter a location'>
+        <button id = 'button' type = 'button' class="btn btn-primary"> Search </button>
+        <button id = 'CL_button' type = 'button' class="btn btn-primary"> GetCurrentPosition</button> -->
+        {% comment %} <input id="pac-input" type="text" placeholder="Enter a location"> {% endcomment %}
+        <button id="button" type="button">Search</button>
+        <button id="CL_button" type="button">Get Current Position</button>
+    </div>
         <div id="map-container">
             <div id="map" style ="height:500px; width:100%;"></div>
         </div>
+        <div id="container">
+            <div id="sidebar">
+                <h2 class="result-heading">Add a Restaurant <button id="more" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Refresh </button></h2>
+                <table id="places", class="table-style"></table>
+                <!-- <button id="more" class="btn btn-secondary">Load more results</button> -->
+                
+            </div>
+        </div>
+        <script 
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDL77OS5N8c5X2khsmnCs-xvOk5z5Ig9oU&libraries=places&callback=initMap&libraries=places&v=weekly"
+            defer >
+        </script>
 
     </div>
 </div>
@@ -50,7 +72,33 @@
     }
     const csrftoken = getCookie('csrftoken');
 
+
     function buildList() {
+        var wrapper_restaurant = document.getElementById("restaurant-table")
+        wrapper_restaurant.innerHTML = ''
+        var url_restaurant = "http://127.0.0.1:8000/itinerary/api/restaurants-list/"
+        wrapper_restaurant.innerHTML +=
+        `
+            <thead>
+                <tr>
+                    <th>Restaurant</th>
+                </tr>
+            </thead>
+
+            <tbody>`
+        fetch(url_restaurant).then((resp) => resp.json()).then(function(data){
+            var restaurants = data
+            for (var i in restaurants) {
+                var item = `
+                    <tr>
+                        <td>${restaurants[i].name}</td>
+                    </tr>
+                    `
+                wrapper_restaurant.innerHTML += item
+            }
+            wrapper_restaurant.innerHTML += `</tbody>`
+        })
+
         var wrapper = document.getElementById("itinerary-table")
         wrapper.innerHTML = ''
         var url = "http://127.0.0.1:8000/itinerary/api/itinerary-list/"

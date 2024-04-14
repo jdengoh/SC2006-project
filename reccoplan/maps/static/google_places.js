@@ -374,7 +374,36 @@ async function addPlaces(places, map, markerArray) {
 // }
 async function createItem(place, address, postalCode){
     try {
-        const i_id = await getItineraryID();
+        
+        var restuarant_url = "http://127.0.0.1:8000/itinerary/api/restaurants-list/";
+        const resp_check = await fetch(restuarant_url);
+        const data_check = await resp_check.json();
+
+        if (data_check[0] != null) {
+            const i_id = await getItineraryID();
+            id = data_check[0].id;
+            var url = `http://127.0.0.1:8000/api/location-update/${id}/`;
+            const resp = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-type': 'application/json',
+                    'X-CSRFtoken': csrftoken
+                },
+                body: JSON.stringify({
+                    "name": place.name,
+                    "postal_code": postalCode,
+                    "address": address,
+                    "itineraryID": parseInt(i_id),
+                    "is_Restaurant": true,
+                })
+                });
+            console.log(place.name, postalCode, address)
+            console.log("Location created:", resp);
+
+        
+        }
+        else {
+            const i_id = await getItineraryID();
         var url = "http://127.0.0.1:8000/api/location-create/";
 
         const resp = await fetch(url, {
@@ -384,12 +413,14 @@ async function createItem(place, address, postalCode){
                 'X-CSRFtoken': csrftoken
             },
             body: JSON.stringify({
-                'name': place.name,
+                "name": place.name,
                 "postal_code": postalCode,
-                'address': address,
-                'itineraryID': parseInt(i_id),
+                "address": address,
+                "is_Restaurant": true,
+                "itineraryID": parseInt(i_id),
             })
         });
+        } 
     } catch (error) {
         console.error("Error creating location:", error);
         throw error;
