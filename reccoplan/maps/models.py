@@ -11,6 +11,9 @@ class Location(models.Model):
     edited_at = models.DateTimeField(auto_now=True)
     itineraryID = models.ForeignKey(UserItinerary, related_name="activities", on_delete=models.CASCADE) # to change to non-nullable since location added to itinerary?
     is_Restaurant = models.BooleanField(default=False)
+
+    lat = models.FloatField(blank=True, null=True)
+    lon = models.FloatField(blank=True, null=True)
     
     def __str__(self):
         return self.name

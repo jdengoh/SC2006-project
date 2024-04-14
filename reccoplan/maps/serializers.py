@@ -6,5 +6,5 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ['id', 'name', 'postal_code', 'address', 'itineraryID', 'is_Restaurant'] #protected fields?
+        fields = ['id', 'name', 'postal_code', 'address', 'itineraryID', 'is_Restaurant', 'lat', 'lon'] #protected fields?
         read_only_fields = ['created_at', 'edited_at']

@@ -82,7 +82,7 @@ function initMap(){
         zoom: 15,
         mapId: "8d193001f940fde3",
     });
-
+    
 
     const locationButton = document.getElementById('button');
     locationButton.textContent = 'Search for Nearby Activities';
@@ -190,7 +190,7 @@ function initMap(){
         searchResultMarkers.push(marker);
 
     }); 
-
+    
     locationButton.addEventListener('click',()=> {
         console.log('position:', CurPlace);
         service.nearbySearch(
@@ -231,6 +231,7 @@ async function getPlaceDetails(place, map) {
             placeId: place.reference,
             fields: ['address_component']
         }, (placeResult, status) => {
+            console.log(placeResult)
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 for (let i = 0; i < placeResult.address_components.length; i++) {
                     const addressType = placeResult.address_components[i].types[0];
@@ -250,8 +251,8 @@ async function getPlaceDetails(place, map) {
                         address += placeResult.address_components[i]['long_name'] + ' ';
                     }
                 }
-                console.log('Address:', address);
-                console.log('Postal Code:', postalCode);
+                // console.log('Address:', address);
+                // console.log('Postal Code:', postalCode);
                 resolve({ address, postalCode });
             } else {
                 reject(status);
@@ -286,7 +287,8 @@ async function addPlaces(places, map, markerArray) {
             var i=0;
             for (const place of places) {
                 //console.log("PLACES BELOW")
-                // console.log(place)
+                // console.log("lat", place.geometry.location.lat())
+                // console.log("long", place.geometry.location.lng())
                 // Get place details using PlacesService
             const { address, postalCode } = await getPlaceDetails(place, map);
 
@@ -395,8 +397,11 @@ async function createItem(place, address, postalCode){
                     "address": address,
                     "itineraryID": parseInt(i_id),
                     "is_Restaurant": true,
+                    "lat": place.geometry.location.lat(),
+                    "lon": place.geometry.location.lng(),
                 })
                 });
+            // console.log("Location:", resp);
             // console.log(place.name, postalCode, address)
             // console.log("Location created:", resp);
 
@@ -440,6 +445,8 @@ async function createItem(place, address, postalCode){
                 "address": address,
                 "is_Restaurant": true,
                 "itineraryID": parseInt(i_id),
+                "lat": place.geometry.location.lat(),
+                "lon": place.geometry.location.lng(),
             })
         });
         } 
