@@ -204,10 +204,27 @@ function initMap(){
     }); 
     
     locationButton.addEventListener('click',()=> {
+        
         console.log('position:', CurPlace);
         service.nearbySearch(
-        {location: { 'lat': parseFloat(restaurantData[0].lat), lng: parseFloat(restaurantData[0].lon)}, radius: 500, type: ["store"] },
+        {location: { lat: parseFloat(restaurantData[0].lat), lng: parseFloat(restaurantData[0].lon)}, radius: 500, type: ["store"] },
         (results, status, pagination) => {
+        //const place = restaurantData[0]
+        //location={ lat: parseFloat(restaurantData[0].lat), lng: parseFloat(restaurantData[0].lon)};
+        const position = { lat: parseFloat(restaurantData[0].lat), lng: parseFloat(restaurantData[0].lon)}; 
+        var marker = new google.maps.Marker({
+                        position: position,
+                        map:map,
+                    });  
+        marker.setVisible(false);
+    
+        map.setCenter(position);
+        map.setZoom(17);
+
+    marker.setPosition(position);
+    marker.setVisible(true);
+    searchResultMarkers.push(marker);
+
             //if (status !== "OK" || !results) return;
             addPlaces(results, map,nearbyPlacesMarkers);
             moreButton.disabled = !pagination || !pagination.hasNextPage;
