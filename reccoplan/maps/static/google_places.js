@@ -222,10 +222,46 @@ function initMap(){
     // Perform a nearby search.
 
 }
+async function getPlaceDetails(place, map) {
+    let postalCode = '';
+    let address = '';
+    return new Promise((resolve, reject) => {
+        const service = new google.maps.places.PlacesService(map);
+        service.getDetails({
+            placeId: place.reference,
+            fields: ['address_component']
+        }, (placeResult, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                for (let i = 0; i < placeResult.address_components.length; i++) {
+                    const addressType = placeResult.address_components[i].types[0];
+                    if (addressType === 'postal_code') {
+                        postalCode = placeResult.address_components[i]['long_name'];
+                    }
+                    if (addressType === 'street_number' || addressType === 'route') {
+                        address += placeResult.address_components[i]['long_name'] + ' ';
+                    }
+                    if (addressType === 'locality') {
+                        address += placeResult.address_components[i]['long_name'] + ', ';
+                    }
+                    if (addressType === 'neighborhood') {
+                        address += placeResult.address_components[i]['long_name'] + ' ';
+                    }
+                    if (addressType === 'subpremise') {
+                        address += placeResult.address_components[i]['long_name'] + ' ';
+                    }
+                }
+                console.log('Address:', address);
+                console.log('Postal Code:', postalCode);
+                resolve({ address, postalCode });
+            } else {
+                reject(status);
+            }
+        });
+    });
+}
 
 
-
-function addPlaces(places, map, markerArray) {
+async function addPlaces(places, map, markerArray) {
 
     clearMarkers(markerArray);
 
@@ -250,7 +286,9 @@ function addPlaces(places, map, markerArray) {
             var i=0;
             for (const place of places) {
                 //console.log("PLACES BELOW")
-                console.log(place)
+                // console.log(place)
+                // Get place details using PlacesService
+            const { address, postalCode } = await getPlaceDetails(place, map);
 
                 if (place.geometry && place.geometry.location) {
                     const image = {
@@ -272,7 +310,7 @@ function addPlaces(places, map, markerArray) {
                     var item = 
                     `<tr>
                         <td>${place.name}</td>
-                        <td></td>
+                        <td>${address} ${postalCode}</td>
                         <td>
                             <button id="add_activity_${i}" class="btn btn-secondary"> Add </button>
                         </td>
@@ -295,6 +333,7 @@ function addPlaces(places, map, markerArray) {
 
         j=0;
         for (const place of places) {
+            const { address, postalCode } = await getPlaceDetails(place, map);
             let add_act = "add_activity_"
             let id = add_act.concat(j.toString())
             console.log(id)
@@ -302,7 +341,7 @@ function addPlaces(places, map, markerArray) {
             if (createbtn) {
                 createbtn.addEventListener('click', (function(){
                 //returZZZZZZn function(){
-                createItem(place)
+                createItem(place, address, postalCode)
                 })
         // }(places[i]))
             )
@@ -333,7 +372,7 @@ function addPlaces(places, map, markerArray) {
 //         })();
     
 // }
-async function createItem(place) {
+async function createItem(place, address, postalCode){
     try {
         const i_id = await getItineraryID();
         var url = "http://127.0.0.1:8000/api/location-create/";
@@ -346,8 +385,8 @@ async function createItem(place) {
             },
             body: JSON.stringify({
                 'name': place.name,
-                "postal_code": 12345,
-                'address': place.reference,
+                "postal_code": postalCode,
+                'address': address,
                 'itineraryID': parseInt(i_id),
             })
         });
