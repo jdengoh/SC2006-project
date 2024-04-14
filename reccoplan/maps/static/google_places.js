@@ -397,10 +397,32 @@ async function createItem(place, address, postalCode){
                     "is_Restaurant": true,
                 })
                 });
-            console.log(place.name, postalCode, address)
-            console.log("Location created:", resp);
+            // console.log(place.name, postalCode, address)
+            // console.log("Location created:", resp);
 
+            //delete all previous activities
+            url_activities = `http://127.0.0.1:8000/itinerary/api/itinerary-list/`
+
+            resp_activities = await fetch(url_activities);
+            data_activities = await resp_activities.json();
+            activities = data_activities[0].activities;
+
+            if (activities.length > 0) {
+                for (const activity of activities) {
+                    if (activity.id != id) {
+                        url_del = `http://127.0.0.1:8000/api/location-delete/${activity.id}/`
+                        fetch(url_del, {
+                            method: 'DELETE',
+                            headers: {
+                                'Content-type': 'application/json',
+                                'X-CSRFtoken': csrftoken
+                            }
+                        });
         
+                     }
+                }
+            }
+
         }
         else {
             const i_id = await getItineraryID();
