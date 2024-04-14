@@ -173,7 +173,7 @@ function initMap(){
         } else {
             console.error("Geolocation is not supported by this browser.");
         }
-    });
+    })
     
     autocomplete.addListener('place_changed',()=>{ 
         clearAllMarkers();
@@ -386,90 +386,58 @@ async function addPlaces(places, map, markerArray) {
 //         })();
     
 // }
+
 async function createItem(place, address, postalCode){
-    try {
-        
-        var restuarant_url = "http://127.0.0.1:8000/itinerary/api/restaurants-list/";
-        const resp_check = await fetch(restuarant_url);
-        const data_check = await resp_check.json();
-
-        if (data_check[0] != null) {
-            const i_id = await getItineraryID();
-            id = data_check[0].id;
-            var url = `http://127.0.0.1:8000/api/location-update/${id}/`;
-            const resp = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-type': 'application/json',
-                    'X-CSRFtoken': csrftoken
-                },
-                body: JSON.stringify({
-                    "name": place.name,
-                    "postal_code": postalCode,
-                    "address": address,
-                    "itineraryID": parseInt(i_id),
-                    "is_Restaurant": true,
-                    "lat": place.geometry.location.lat(),
-                    "lon": place.geometry.location.lng(),
-                    "position" : place,
-                })
-                });
-                console.log(place)
-            // console.log("Location:", resp);
-            // console.log(place.name, postalCode, address)
-            // console.log("Location created:", resp);
-
-            //delete all previous activities
-            url_activities = `http://127.0.0.1:8000/itinerary/api/itinerary-list/`
-
-            resp_activities = await fetch(url_activities);
-            data_activities = await resp_activities.json();
-            activities = data_activities[0].activities;
-
-            if (activities.length > 0) {
-                for (const activity of activities) {
-                    if (activity.id != id) {
-                        url_del = `http://127.0.0.1:8000/api/location-delete/${activity.id}/`
-                        fetch(url_del, {
-                            method: 'DELETE',
-                            headers: {
-                                'Content-type': 'application/json',
-                                'X-CSRFtoken': csrftoken
-                            }
-                        });
-        
-                     }
-                }
-            }
-
-        }
-        else {
-            const i_id = await getItineraryID();
-        var url = "http://127.0.0.1:8000/api/location-create/";
-
-        const resp = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-type': 'application/json',
-                'X-CSRFtoken': csrftoken
-            },
-            body: JSON.stringify({
-                "name": place.name,
-                "postal_code": postalCode,
-                "address": address,
-                "is_Restaurant": true,
-                "itineraryID": parseInt(i_id),
-                "lat": place.geometry.location.lat(),
-                "lon": place.geometry.location.lng(),
-                "position" : place,
-            })
-        });
-        } 
-    } catch (error) {
-        console.error("Error creating location:", error);
-        throw error;
-    }
+    const i_id = await getItineraryID();
+    var url = "http://127.0.0.1:8000/api/location-create/";
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json',
+            'X-CSRFtoken': csrftoken
+        },
+        body: JSON.stringify({
+            "name": place.name,
+            "postal_code": postalCode,
+            "address": address,
+            "is_Restaurant": false,
+            "itineraryID": parseInt(i_id),
+            "lat": place.geometry.location.lat(),
+            "lon": place.geometry.location.lng(),
+            "position" : place,
+        })
+    }).then((response) => {
+        buildList();
+    })
 }
+//async function createItem(place, address, postalCode){
+ //   try {
+   // 
+   //     var url = "http://127.0.0.1:8000/api/location-create/";
+
+    //    const resp = await fetch(url, {
+      //      method: 'POST',
+      //      headers: {
+      //          'Content-type': 'application/json',
+      //          'X-CSRFtoken': csrftoken
+//            },
+//            body: JSON.stringify({
+//                "name": place.name,
+//                "postal_code": postalCode,
+//                "address": address,
+//                "is_Restaurant": false,
+//                "itineraryID": parseInt(i_id),
+//                "lat": place.geometry.location.lat(),
+//                "lon": place.geometry.location.lng(),
+//                "position" : place,
+//            })
+//        });
+//         
+//    } catch (error) {
+//        console.error("Error creating location:", error);
+//        throw error;
+//    }
+//}
 
 // function setMapOnAll(map) {
 //     for (let i = 0; i < markerArray.length; i++) {
