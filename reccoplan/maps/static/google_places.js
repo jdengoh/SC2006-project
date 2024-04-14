@@ -85,7 +85,7 @@ function initMap(){
     
 
     const locationButton = document.getElementById('button');
-    locationButton.textContent = 'Search for Nearby Activities';
+    locationButton.textContent = 'Search for Nearby Restaurant';
     locationButton.classList.add('map-button');
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
 
