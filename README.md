@@ -23,6 +23,10 @@
 * https://stackoverflow.com/questions/8144005/google-map-to-display-multiple-locations-in-django-project
 * https://www.youtube.com/watch?v=DCmxC0NyfrA
 
+## Django REST Framework
+* https://www.django-rest-framework.org/
+* https://www.youtube.com/watch?v=hISSGMafzvU
+
 
 ## HMTL/CSS
 * https://getbootstrap.com/docs/4.4/getting-started/introduction/
