@@ -194,7 +194,7 @@ function initMap(){
     locationButton.addEventListener('click',()=> {
         console.log('position:', CurPlace);
         service.nearbySearch(
-        {location: CurPosition, radius: 500, type: ["store"] },
+        {location: CurPosition, radius: 500, type: ["restaurant"] },
         (results, status, pagination) => {
             //if (status !== "OK" || !results) return;
             addPlaces(results, map,nearbyPlacesMarkers);
